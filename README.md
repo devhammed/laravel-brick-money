@@ -26,7 +26,7 @@ This package provides the Laravel integration of [Brick/Money](https://github.co
 - `Money` / `Currency` Value Objects
 - `IntegerMoneyCast` / `DecimalMoneyCast` / `CurrencyCast` Casts
 - `Money` / `Currency` View Components
-- `money` / `currency` Helper Functions
+- `money(...)` / `currency(...)` Helper Functions
 - `@money(...)` / `@currency(...)` Blade Directives
 - `MoneyRule` for Validation
 
