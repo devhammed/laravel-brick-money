@@ -50,7 +50,7 @@ class Provider extends PackageServiceProvider
                 return null;
             }
 
-            return Currency::of($value);
+            return currency($value);
         });
 
         Request::macro('money', function (
@@ -67,19 +67,7 @@ class Provider extends PackageServiceProvider
                 return null;
             }
 
-            if ($currency === null) {
-                /** @var string $currency */
-                $currency = config('brick-money.currency');
-            }
-
-            if ($major === null) {
-                /** @var bool $major */
-                $major = config('brick-money.major');
-            }
-
-            return $major
-                ? Money::of($value, $currency, $context, $roundingMode)
-                : Money::ofMinor($value, $currency, $context, $roundingMode);
+            return money($value, $currency, $major, $context, $roundingMode);
         });
     }
 }

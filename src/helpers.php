@@ -35,8 +35,9 @@ if (! function_exists('money')) {
 if (! function_exists('currency')) {
     function currency(?string $currency = null): Currency
     {
-        if (is_null($currency)) {
-            $currency = config()->string('brick-money.currency');
+        if ($currency === null) {
+            /** @var string $currency */
+            $currency = config('brick-money.currency');
         }
 
         return Currency::of($currency);
