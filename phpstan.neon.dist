@@ -1,0 +1,19 @@
+includes:
+    - phpstan-baseline.neon
+
+parameters:
+    level: 9
+    paths:
+        - src
+        - config
+        - resources/views
+    tmpDir: build/phpstan
+    checkOctaneCompatibility: true
+    checkModelProperties: true
+    noEnvCallsOutsideOfConfig: false
+    viewDirectories:
+        - resources/views
+    ignoreErrors:
+            - '#Unsafe usage of new static#'
+            - '#Cannot cast mixed to (.*)#'
+            - '#Parameter \#1 \$view of function view expects view-string\|null, string given#'

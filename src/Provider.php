@@ -1,0 +1,85 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Devhammed\LaravelBrickMoney;
+
+use Brick\Math\RoundingMode;
+use Brick\Money\Context;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Request;
+use Spatie\LaravelPackageTools\Package;
+use Spatie\LaravelPackageTools\PackageServiceProvider;
+
+class Provider extends PackageServiceProvider
+{
+    public function configurePackage(Package $package): void
+    {
+        $package
+            ->name('laravel-brick-money')
+            ->hasViews()
+            ->hasConfigFile()
+            ->hasTranslations();
+    }
+
+    public function packageBooted(): void
+    {
+        Blade::directive('money', function (string $expression) {
+            return "<?php echo money({$expression}); ?>";
+        });
+
+        Blade::directive('currency', function (string $expression) {
+            return "<?php echo currency({$expression}); ?>";
+        });
+
+        Blade::component('money', View\Components\Money::class);
+
+        Blade::component('currency', View\Components\Currency::class);
+
+        Money::setLocale($this->app->make('translator')->getLocale());
+
+        /** @var array<mixed> $currencies */
+        $currencies = $this->app->make('config')->get('brick-money.currencies', []);
+
+        Currency::setCurrencies($currencies);
+
+        Request::macro('currency', function (string $key, ?string $default = null): ?Currency {
+            $value = $this->input($key, $default);
+
+            if (! is_string($value)) {
+                return null;
+            }
+
+            return Currency::of($value);
+        });
+
+        Request::macro('money', function (
+            string $key,
+            ?string $default = null,
+            ?string $currency = null,
+            ?bool $major = null,
+            ?Context $context = null,
+            RoundingMode $roundingMode = RoundingMode::UNNECESSARY
+        ): ?Money {
+            $value = $this->input($key, $default);
+
+            if (! is_string($value) && ! is_int($value) && ! is_float($value)) {
+                return null;
+            }
+
+            if ($currency === null) {
+                /** @var string $currency */
+                $currency = config('brick-money.currency');
+            }
+
+            if ($major === null) {
+                /** @var bool $major */
+                $major = config('brick-money.major');
+            }
+
+            return $major
+                ? Money::of($value, $currency, $context, $roundingMode)
+                : Money::ofMinor($value, $currency, $context, $roundingMode);
+        });
+    }
+}
