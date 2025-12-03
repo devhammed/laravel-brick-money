@@ -24,10 +24,10 @@ class TransactionModelFactory extends Factory
     public function definition(): array
     {
         return [
-            'price' => Money::of($this->faker->numberBetween(10, 99999), $this->faker->randomElement(['USD', 'EUR', 'NGN'])),
-            'tax' => Money::of($this->faker->numberBetween(10, 99999), $this->faker->randomElement(['USD', 'EUR', 'NGN'])),
-            'platform_fee' => Money::of($this->faker->numberBetween(10, 99999), $this->faker->randomElement(['USD', 'EUR', 'NGN'])),
-            'gas_fee' => Money::of($this->faker->numberBetween(10, 99999), $this->faker->randomElement(['USD', 'EUR', 'NGN'])),
+            'price' => Money::of($this->faker->numberBetween(10, 10_000), $this->faker->randomElement(['USD', 'EUR', 'NGN'])),
+            'tax' => Money::of($this->faker->numberBetween(10, 10_000), $this->faker->randomElement(['USD', 'EUR', 'NGN'])),
+            'platform_fee' => Money::of($this->faker->randomFloat(2, 10, 10_000), $this->faker->randomElement(['USD', 'EUR', 'NGN'])),
+            'gas_fee' => Money::of($this->faker->randomFloat(2, 10, 10_000), $this->faker->randomElement(['USD', 'EUR', 'NGN'])),
         ];
     }
 }
