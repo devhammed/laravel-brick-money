@@ -16,7 +16,7 @@
         - [Request Macros](#request-macros)
         - [Validation Rules](#validation-rules)
     - [Helpers](#helpers)
-    - [Blade](#blade)
+    - [Views](#views)
         - [Components](#components)
         - [Directives](#directives)
     - [Extensions](#extensions)
@@ -189,7 +189,7 @@ money(100, 'EUR') // €100,00
 currency('USD') // USD
 ```
 
-### Blade
+### Views
 
 This package provides helpers to work with `money` and `currency` in Blade templates.
 
