@@ -14,6 +14,14 @@ use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 class CurrencyCast implements CastsAttributes
 {
     /**
+     * Create a currency cast definition.
+     */
+    public static function make(): string
+    {
+        return static::class;
+    }
+
+    /**
      * Transform the attribute from the underlying model values.
      */
     public function get($model, string $key, mixed $value, array $attributes): Currency

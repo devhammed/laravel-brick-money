@@ -27,11 +27,22 @@ abstract class MoneyCast implements CastsAttributes
     /**
      * Create instance of the cast.
      */
-    public function __construct(?string $currency = null, ?string $amount = null)
+    public function __construct(?string $currencyColumn = null, ?string $amountColumn = null)
     {
-        $this->currencyColumn = $currency;
+        $this->currencyColumn = $currencyColumn;
 
-        $this->amountColumn = $amount;
+        $this->amountColumn = $amountColumn;
+    }
+
+    /**
+     * Create a money cast definition.
+     */
+    public static function make(?string $currencyColumn = null, ?string $amountColumn = null): string
+    {
+        return static::class
+            .(($currencyColumn || $amountColumn) ? ':' : '')
+            .($currencyColumn ?? '')
+            .($amountColumn ? ",{$amountColumn}" : '');
     }
 
     /**
