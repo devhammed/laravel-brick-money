@@ -87,7 +87,9 @@ class Currency implements Arrayable, Jsonable, JsonSerializable, Stringable
         $currencies = static::getCurrencies();
 
         if (! array_key_exists($currency, $currencies)) {
-            throw new UnknownCurrencyException(__('brick-money::validation.invalid_currency'));
+            throw new UnknownCurrencyException(__('brick-money::validation.invalid_currency', [
+                'attribute' => 'code',
+            ]));
         }
 
         $attributes = (array) $currencies[$currency];
