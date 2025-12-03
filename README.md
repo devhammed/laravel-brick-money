@@ -46,9 +46,13 @@ use Devhammed\LaravelBrickMoney\Money;
 use Devhammed\LaravelBrickMoney\Currency;
 
 echo Money::of(100); // '$100.00'
+
 echo Money::of(100, Currency::of('EUR')) // '€100,00'
+
 echo Money::of(100, 'USD') // '$100.00'
+
 echo Money::ofMinor(100); // '$1.00'
+
 echo Money::ofMinor(100, 'EUR'); // '€1,00'
 ```
 
@@ -56,8 +60,11 @@ echo Money::ofMinor(100, 'EUR'); // '€1,00'
 
 ```php
 money(100) // $1.00
+
 money(100, major: true) // $100
+
 money(100, 'EUR') // €1,00
+
 currency('USD') // USD
 ```
 
