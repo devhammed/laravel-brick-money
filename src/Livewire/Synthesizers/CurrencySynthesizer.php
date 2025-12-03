@@ -49,7 +49,9 @@ class CurrencySynthesizer extends Synth
             'thousandSeparator' => $target->getThousandSeparator(),
             'prefix' => $target->getPrefix(),
             'suffix' => $target->getSuffix(),
-            default => throw new UnknownCurrencyException(__('brick-money::validation.invalid_property')),
+            default => throw new UnknownCurrencyException(__('brick-money::validation.invalid_selection', [
+                'attribute' => 'property',
+            ])),
         };
     }
 
@@ -65,7 +67,9 @@ class CurrencySynthesizer extends Synth
         if ($key === 'code') {
             $target = Currency::of($value);
         } else {
-            throw new UnknownCurrencyException(__('brick-money::validation.invalid_property'));
+            throw new UnknownCurrencyException(__('brick-money::validation.invalid_selection', [
+                'attribute' => 'property',
+            ]));
         }
     }
 }

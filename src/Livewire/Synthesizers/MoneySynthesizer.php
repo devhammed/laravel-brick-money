@@ -68,7 +68,9 @@ class MoneySynthesizer extends Synth
             'custom' => new CustomContext(...$contextArgs),
             'auto' => new AutoContext,
             'default' => new DefaultContext,
-            default => throw new MoneyMismatchException(__('brick-money::validation.invalid_context')),
+            default => throw new MoneyMismatchException(__('brick-money::validation.invalid_selection', [
+                'attribute' => 'context',
+            ])),
         };
 
         return Money::of($amount, $currency, $contextInstance);
@@ -86,7 +88,9 @@ class MoneySynthesizer extends Synth
         return match ($key) {
             'amount' => (string) $target->getAmount(),
             'currency' => (string) $target->getCurrency(),
-            default => throw new MoneyMismatchException(__('brick-money::validation.invalid_property')),
+            default => throw new MoneyMismatchException(__('brick-money::validation.invalid_selection', [
+                'attribute' => 'property',
+            ])),
         };
     }
 
@@ -104,7 +108,9 @@ class MoneySynthesizer extends Synth
         } elseif ($key === 'currency') {
             $target = Money::of($target->getAmount(), $value);
         } else {
-            throw new MoneyMismatchException(__('brick-money::validation.invalid_property'));
+            throw new MoneyMismatchException(__('brick-money::validation.invalid_selection', [
+                'attribute' => 'property',
+            ]));
         }
     }
 }

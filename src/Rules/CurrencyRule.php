@@ -19,7 +19,7 @@ class CurrencyRule implements ValidationRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         if (! (is_string($value) && array_key_exists(mb_strtoupper($value), Currency::getCurrencies()))) {
-            $fail(__('brick-money::validation.invalid_currency'))->translate();
+            $fail(__('brick-money::validation.invalid_selection'))->translate();
         }
     }
 }
