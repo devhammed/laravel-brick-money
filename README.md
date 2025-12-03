@@ -6,29 +6,20 @@
 
 ## Table of Contents
 
--   [Introduction](#introduction)
--   [Features](#features)
--   [Installation](#installation)
--   [Configuration](#configuration)
--   [Testing](#testing)
--   [Changelog](#changelog)
--   [Contributing](#contributing)
--   [Security](#security)
--   [Credits](#credits)
--   [License](#license)
+- [Introduction](#introduction)
+- [Features](#features)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Testing](#testing)
+- [Changelog](#changelog)
+- [Contributing](#contributing)
+- [Security](#security)
+- [Credits](#credits)
+- [License](#license)
 
 ## Introduction
 
 This package provides the Laravel integration of [Brick/Money](https://github.com/brick/money).
-
-## Features
-
-- `Money` / `Currency` Value Objects
-- `IntegerMoneyCast` / `DecimalMoneyCast` / `CurrencyCast` Casts
-- `Money` / `Currency` View Components
-- `money(...)` / `currency(...)` Helper Functions
-- `@money(...)` / `@currency(...)` Blade Directives
-- `MoneyRule` / `CurrencyRule` Validation Rules
 
 ## Installation
 
@@ -48,6 +39,49 @@ php artisan vendor:publish --tag="brick-money-config"
 
 You can view the contents of the default configuration in [config/brick-money.php](./config/brick-money.php)
 
+## Usage
+
+```php
+use Devhammed\LaravelBrickMoney\Money;
+use Devhammed\LaravelBrickMoney\Currency;
+
+echo Money::of(100); // '$100.00'
+echo Money::of(100, Currency::of('EUR')) // '€100,00'
+echo Money::of(100, 'USD') // '$100.00'
+echo Money::ofMinor(100); // '$1.00'
+```
+
+### Helpers
+
+```php
+money(100) // $1.00
+money(100, major: true) // $100
+money(100, 'EUR') // €1,00
+currency('USD') // USD
+```
+
+### Blade Components
+
+```html
+
+<x-money amount="100"/> <!-- $1.00 -->
+
+<x-money amount="100" currency="USD"/> <!-- $1.00 -->
+
+<x-money amount="100" currency="USD" major/> <!-- $100.00 -->
+
+<x-currency currency="USD"/> <!-- USD -->
+```
+
+### Blade Directives
+
+```php
+@money(100) // $1.00
+@money(100, major: true) // $100
+@money(100, 'EUR') // €1,00
+@currency('USD') // USD
+```
+
 ## Testing
 
 Run the test suite:
@@ -66,8 +100,8 @@ If you discover a security vulnerability, please refer to the [security policy](
 
 ## Credits
 
--   [Hammed Oyedele](https://github.com/devhammed)
--   [All Contributors](../../contributors)
+- [Hammed Oyedele](https://github.com/devhammed)
+- [All Contributors](../../contributors)
 
 ## License
 
