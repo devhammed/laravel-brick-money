@@ -6,15 +6,15 @@ use Devhammed\LaravelBrickMoney\Currency;
 use Devhammed\LaravelBrickMoney\Money;
 
 it('returns a money object', function () {
-    $this->assertEquals(Money::ofMinor(1000, Currency::of('USD')), money(1000, minor: true));
+    $this->assertEquals(Money::ofMinor(1_000, Currency::of('USD')), money(1_000, minor: true));
 });
 
 it('returns a money object in major unit', function () {
-    $this->assertEquals(Money::ofMinor(100000, Currency::of('USD')), money(1000));
+    $this->assertEquals(Money::ofMinor(100_000, Currency::of('USD')), money(1_000));
 });
 
 it('returns a money object in different currencies', function () {
-    $this->assertEquals(Money::ofMinor(100000, Currency::of('EUR')), money(1000, currency: 'EUR'));
+    $this->assertEquals(Money::ofMinor(100_000, Currency::of('EUR')), money(1_000, currency: 'EUR'));
 });
 
 it('returns a currency object', function () {
