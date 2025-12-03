@@ -11,6 +11,7 @@ parameters:
     checkOctaneCompatibility: true
     checkModelProperties: true
     noEnvCallsOutsideOfConfig: false
+    reportUnmatchedIgnoredErrors: false
     viewDirectories:
         - resources/views
     ignoreErrors:

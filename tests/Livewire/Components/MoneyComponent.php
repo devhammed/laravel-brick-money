@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Devhammed\LaravelBrickMoney\Tests\Livewire;
+namespace Devhammed\LaravelBrickMoney\Tests\Livewire\Components;
 
 use Devhammed\LaravelBrickMoney\Money;
 use Livewire\Component;
