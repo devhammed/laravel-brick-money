@@ -135,7 +135,7 @@ This package provides Model casts to help with money and currency storage in the
 
 ### HTTP
 
-This package provides helpers to make working with `money`/`currency` in HTTP Requests easy.
+This package provides helpers to work with `money`/`currency` in HTTP Requests.
 
 #### Request Macros
 
@@ -191,7 +191,7 @@ currency('USD') // USD
 
 ### Blade
 
-This package provides helpers to make working with money and currency in Blade template easy.
+This package provides helpers to work with `money` and `currency` in Blade templates.
 
 #### Components
 
