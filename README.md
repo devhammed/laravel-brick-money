@@ -157,7 +157,10 @@ currency('USD') // USD
 
 ### Extensions
 
-This package implements the Laravel `Macroable` trait, allowing macros and mixins on both `Money` and `Currency`.
+The `Money` and `Currency` classes implements the Laravel `Macroable` trait, allowing you to add custom functionalities
+through macros and mixins.
+
+#### Macros
 
 ```php
 use Devhammed\LaravelBrickMoney\Money;
@@ -171,6 +174,8 @@ Money::macro('withPercentage', function (float $percentage): Money {
 
 Money::zero()->plus(100)->withPercentage(10); // $110
 ```
+
+#### Mixins
 
 And with mixins, you can achieve the same thing using a dedicated class:
 
