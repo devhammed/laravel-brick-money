@@ -34,15 +34,7 @@ class MoneyRule implements ValidationRule
             return;
         }
 
-        /** @var string $currency */
-        $currency = $this->currency ?? config('brick-money.currency');
-
-        /** @var bool $minor */
-        $minor = $this->minor ?? config('brick-money.minor');
-
-        $money = $minor
-            ? Money::ofMinor($value, $currency)
-            : Money::of($value, $currency);
+        $money = money($value, $this->currency, $this->minor);
 
         if ($this->min !== null && $money->isLessThan($this->min)) {
             $fail(__('brick-money::validation.min_money'));
