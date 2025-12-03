@@ -22,7 +22,7 @@ class TestCase extends Orchestra
         $app['db']->connection()->getSchemaBuilder()->create('transactions', function (Blueprint $table) {
             $table->id();
 
-            $table->bigInteger('price');
+            $table->string('price');
             $table->string('price_currency');
             $table->json('tax');
             $table->json('gas_fee');
