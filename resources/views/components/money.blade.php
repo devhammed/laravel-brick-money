@@ -1,1 +1,1 @@
-{{ money($amount, $currency, $major, $context, $roundingMode) }}
+{{ money($amount, $currency, $minor, $context, $roundingMode) }}

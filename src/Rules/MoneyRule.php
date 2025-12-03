@@ -16,6 +16,7 @@ class MoneyRule implements ValidationRule
         public Money|BigNumber|int|float|string|null $min = null,
         public Money|BigNumber|int|float|string|null $max = null,
         public ?string $currency = null,
+        public ?bool $minor = null,
     ) {
         //
     }
@@ -36,7 +37,12 @@ class MoneyRule implements ValidationRule
         /** @var string $currency */
         $currency = $this->currency ?? config('brick-money.currency');
 
-        $money = Money::of($value, $currency);
+        /** @var bool $minor */
+        $minor = $this->minor ?? config('brick-money.minor');
+
+        $money = $minor
+            ? Money::ofMinor($value, $currency)
+            : Money::of($value, $currency);
 
         if ($this->min !== null && $money->isLessThan($this->min)) {
             $fail(__('brick-money::validation.min_money'));

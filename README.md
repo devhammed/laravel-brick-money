@@ -144,7 +144,7 @@ request()->currency('currency'); // Devhammed\LaravelBrickMoney\Currency{}
 
 request()->money('price'); // Devhammed\LaravelBrickMoney\Money{}
 
-request()->money('price', currency: 'EUR', major: true); // Devhammed\LaravelBrickMoney\Money{}
+request()->money('price', currency: 'EUR', minor: true); // Devhammed\LaravelBrickMoney\Money{}
 ```
 
 #### Validation Rules
@@ -180,11 +180,11 @@ class CreateProductRequest extends FormRequest
 ### Helpers
 
 ```php
-money(100) // $1.00
+money(100) // $100.00
 
-money(100, major: true) // $100
+money(100, minor: true) // $1.00
 
-money(100, 'EUR') // €1,00
+money(100, 'EUR') // €100,00
 
 currency('USD') // USD
 ```
@@ -197,11 +197,11 @@ This package provides helpers to work with `money` and `currency` in Blade templ
 
 ```html
 
-<x-money amount="100"/> <!-- $1.00 -->
+<x-money amount="100"/> <!-- $100.00 -->
 
-<x-money amount="100" currency="USD"/> <!-- $1.00 -->
+<x-money amount="100" currency="USD"/> <!-- $100.00 -->
 
-<x-money amount="100" currency="USD" major/> <!-- $100.00 -->
+<x-money amount="100" currency="USD" minor/> <!-- $1.00 -->
 
 <x-currency currency="USD"/> <!-- USD -->
 ```
@@ -209,11 +209,11 @@ This package provides helpers to work with `money` and `currency` in Blade templ
 #### Directives
 
 ```php
-@money(100) // $1.00
+@money(100) // $100.00
 
-@money(100, major: true) // $100
+@money(100, minor: true) // $1.00
 
-@money(100, 'EUR') // €1,00
+@money(100, 'EUR') // €100,00
 
 @currency('USD') // USD
 ```

@@ -6,7 +6,7 @@ return [
 
     'currency' => env('BRICK_MONEY_CURRENCY', 'USD'),
 
-    'major' => env('BRICK_MONEY_MAJOR', false),
+    'minor' => env('BRICK_MONEY_MINOR', false),
 
     'currencies' => [
 

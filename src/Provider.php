@@ -60,7 +60,7 @@ class Provider extends PackageServiceProvider
             string $key,
             ?string $default = null,
             ?string $currency = null,
-            ?bool $major = null,
+            ?bool $minor = null,
             ?Context $context = null,
             RoundingMode $roundingMode = RoundingMode::UNNECESSARY
         ): ?Money {
@@ -70,7 +70,7 @@ class Provider extends PackageServiceProvider
                 return null;
             }
 
-            return money($value, $currency, $major, $context, $roundingMode);
+            return money($value, $currency, $minor, $context, $roundingMode);
         });
 
         if (class_exists(Livewire::class)) {

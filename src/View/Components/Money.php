@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Devhammed\LaravelBrickMoney\View\Components;
 
 use Brick\Math\BigNumber;
@@ -14,7 +16,7 @@ class Money extends Component
     public function __construct(
         public BigNumber|float|int|string $amount,
         public ?string $currency = null,
-        public ?bool $major = null,
+        public ?bool $minor = null,
         public ?Context $context = null,
         public RoundingMode $roundingMode = RoundingMode::UNNECESSARY
     ) {
