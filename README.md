@@ -49,6 +49,7 @@ echo Money::of(100); // '$100.00'
 echo Money::of(100, Currency::of('EUR')) // '€100,00'
 echo Money::of(100, 'USD') // '$100.00'
 echo Money::ofMinor(100); // '$1.00'
+echo Money::ofMinor(100, 'EUR'); // '€1,00'
 ```
 
 ### Helpers
