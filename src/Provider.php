@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Devhammed\LaravelBrickMoney;
 
+use Brick\Math\BigNumber;
 use Brick\Math\RoundingMode;
 use Brick\Money\Context;
 use Devhammed\LaravelBrickMoney\Livewire\Synthesizers\CurrencySynthesizer;
@@ -58,7 +59,7 @@ class Provider extends PackageServiceProvider
 
         Request::macro('money', function (
             string $key,
-            ?string $default = null,
+            BigNumber|string|int|float|null $default = null,
             ?string $currency = null,
             ?bool $minor = null,
             ?Context $context = null,

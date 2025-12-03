@@ -7,48 +7,26 @@ use Illuminate\Support\Facades\Route;
 
 use function Pest\Laravel\postJson;
 
-it('supports money json in major unit', function () {
-    Route::post('/test-money', function (Request $request) {
+beforeEach(function () {
+    Route::post('/test-major-money', function (Request $request) {
         return $request->money('price');
     });
 
-    postJson('/test-money', ['price' => '100'])
-        ->assertSuccessful()
-        ->assertJson([
-            'amount' => '10000',
-            'value' => '100.00',
-            'currency' => [
-                'name' => 'US Dollar',
-                'code' => 'USD',
-                'numeric_code' => 840,
-                'symbol' => '$',
-            ],
-        ]);
-
-    postJson('/test-money', ['price' => 100])
-        ->assertSuccessful()
-        ->assertJson([
-            'amount' => '10000',
-            'value' => '100.00',
-            'currency' => [
-                'name' => 'US Dollar',
-                'code' => 'USD',
-                'numeric_code' => 840,
-                'symbol' => '$',
-            ],
-        ]);
-});
-
-it('supports money json in minor unit', function () {
-    Route::post('/test-money', function (Request $request) {
+    Route::post('/test-minor-money', function (Request $request) {
         return $request->money('price', minor: true);
     });
 
-    postJson('/test-money', ['price' => '100'])
+    Route::post('/test-default-money', function (Request $request) {
+        return $request->money('price', 0);
+    });
+});
+
+it('supports string money json in major unit', function () {
+    postJson('/test-major-money', ['price' => '100'])
         ->assertSuccessful()
         ->assertJson([
-            'amount' => '100',
-            'value' => '1.00',
+            'amount' => '10000',
+            'value' => '100.00',
             'currency' => [
                 'name' => 'US Dollar',
                 'code' => 'USD',
@@ -56,8 +34,40 @@ it('supports money json in minor unit', function () {
                 'symbol' => '$',
             ],
         ]);
+});
 
-    postJson('/test-money', ['price' => 100])
+it('supports int money json in major unit', function () {
+    postJson('/test-major-money', ['price' => 100])
+        ->assertSuccessful()
+        ->assertJson([
+            'amount' => '10000',
+            'value' => '100.00',
+            'currency' => [
+                'name' => 'US Dollar',
+                'code' => 'USD',
+                'numeric_code' => 840,
+                'symbol' => '$',
+            ],
+        ]);
+});
+
+it('supports float money json in major unit', function () {
+    postJson('/test-major-money', ['price' => 100.50])
+        ->assertSuccessful()
+        ->assertJson([
+            'amount' => '10050',
+            'value' => '100.50',
+            'currency' => [
+                'name' => 'US Dollar',
+                'code' => 'USD',
+                'numeric_code' => 840,
+                'symbol' => '$',
+            ],
+        ]);
+});
+
+it('supports string money json in minor unit', function () {
+    postJson('/test-minor-money', ['price' => '100'])
         ->assertSuccessful()
         ->assertJson([
             'amount' => '100',
@@ -71,12 +81,28 @@ it('supports money json in minor unit', function () {
         ]);
 });
 
-it('supports money json default', function () {
-    Route::post('/test-money', function (Request $request) {
-        return $request->money('price', 0);
-    });
+it('supports int money json in minor unit', function () {
+    postJson('/test-minor-money', ['price' => 100])
+        ->assertSuccessful()
+        ->assertJson([
+            'amount' => '100',
+            'value' => '1.00',
+            'currency' => [
+                'name' => 'US Dollar',
+                'code' => 'USD',
+                'numeric_code' => 840,
+                'symbol' => '$',
+            ],
+        ]);
+});
 
-    postJson('/test-money')
+it('does not supports float money json in minor unit', function () {
+    postJson('/test-minor-money', ['price' => 100.50])
+        ->assertInternalServerError();
+});
+
+it('supports money json default', function () {
+    postJson('/test-default-money')
         ->assertSuccessful()
         ->assertJson([
             'amount' => '0',
@@ -90,11 +116,7 @@ it('supports money json default', function () {
         ]);
 });
 
-it('throws an exception when money is not valid', function () {
-    Route::post('/test-money', function (Request $request) {
-        return $request->money('price');
-    });
-
-    postJson('/test-money', ['price' => 'NOT_VALID'])
+it('does not support invalid values', function () {
+    postJson('/test-default-money', ['price' => 'NOT_VALID'])
         ->assertInternalServerError();
 });

@@ -7,11 +7,13 @@ use Illuminate\Support\Facades\Route;
 
 use function Pest\Laravel\postJson;
 
-it('supports currency json', function () {
+beforeEach(function () {
     Route::post('/test-currency', function (Request $request) {
         return $request->currency('currency');
     });
+});
 
+it('supports currency json', function () {
     postJson('/test-currency', ['currency' => 'USD'])
         ->assertSuccessful()
         ->assertJson([
@@ -23,10 +25,6 @@ it('supports currency json', function () {
 });
 
 it('throws error for invalid currency', function () {
-    Route::post('/test-currency', function (Request $request) {
-        return $request->currency('currency');
-    });
-
     postJson('/test-currency', ['currency' => 'NOT_VALID'])
         ->assertInternalServerError();
 });

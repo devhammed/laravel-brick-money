@@ -11,6 +11,7 @@ use Closure;
 use Devhammed\LaravelBrickMoney\Money;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Translation\PotentiallyTranslatedString;
+use Throwable;
 
 class MoneyRule implements ValidationRule
 {
@@ -28,24 +29,29 @@ class MoneyRule implements ValidationRule
     /**
      * Run the validation rule.
      *
+     * @param  string|int|float  $value
      * @param  Closure(string): PotentiallyTranslatedString  $fail
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (! is_string($value) && ! is_int($value) && ! is_float($value)) {
-            $fail(__('brick-money::validation.invalid_money'));
+        try {
+            $money = money($value, $this->currency, $this->minor, $this->context, $this->roundingMode);
 
-            return;
-        }
+            if ($this->min !== null && $money->isLessThan($this->min)) {
+                $fail(__('brick-money::validation.min_money'))->translate([
+                    'min' => $this->min,
+                ]);
+            }
 
-        $money = money($value, $this->currency, $this->minor, $this->context, $this->roundingMode);
+            if ($this->max !== null && $money->isGreaterThan($this->max)) {
+                $fail(__('brick-money::validation.max_money'))->translate([
+                    'max' => $this->max,
+                ]);
+            }
+        } catch (Throwable $e) {
+            report($e);
 
-        if ($this->min !== null && $money->isLessThan($this->min)) {
-            $fail(__('brick-money::validation.min_money'));
-        }
-
-        if ($this->max !== null && $money->isGreaterThan($this->max)) {
-            $fail(__('brick-money::validation.max_money'));
+            $fail(__('brick-money::validation.invalid_money'))->translate();
         }
     }
 }
