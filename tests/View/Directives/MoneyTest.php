@@ -15,5 +15,5 @@ it('renders a money element with a major unit', function () {
 });
 
 it('renders a money element with different currency', function () {
-    $this->blade('@money(2000, major: true, currency: "EUR")')->assertSee('€2.000,00');
+    $this->blade('@money(2000, "EUR", major: true)')->assertSee('€2.000,00');
 });
