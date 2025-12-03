@@ -85,8 +85,11 @@ currency('USD') // USD
 
 ```php
 @money(100) // $1.00
+
 @money(100, major: true) // $100
+
 @money(100, 'EUR') // €1,00
+
 @currency('USD') // USD
 ```
 
