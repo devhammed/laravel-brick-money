@@ -7,5 +7,5 @@ use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
 uses(InteractsWithViews::class);
 
 it('can render currency', function () {
-    $this->blade('<x-currency currency="USD" />')->assertSee('USD');
+    $this->blade('@currency("USD")')->assertSee('USD');
 });

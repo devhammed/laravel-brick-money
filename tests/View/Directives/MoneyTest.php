@@ -7,13 +7,13 @@ use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
 uses(InteractsWithViews::class);
 
 it('renders a money element', function () {
-    $this->blade('<x-money amount="1000" />')->assertSee('$10.00');
+    $this->blade('@money(1000)')->assertSee('$10.00');
 });
 
 it('renders a money element with a major unit', function () {
-    $this->blade('<x-money amount="5000" major />')->assertSee('$5,000.00');
+    $this->blade('@money(5000, major: true)')->assertSee('$5,000.00');
 });
 
 it('renders a money element with different currency', function () {
-    $this->blade('<x-money amount="2000" currency="EUR" major />')->assertSee('€2.000,00');
+    $this->blade('@money(2000, major: true, currency: "EUR")')->assertSee('€2.000,00');
 });
