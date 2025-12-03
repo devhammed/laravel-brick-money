@@ -11,10 +11,14 @@
 - [Configuration](#configuration)
 - [Usage](#usage)
     - [Available Methods](#available-methods)
-    - [Validation Rules](#validation-rules)
+    - [Eloquent](#eloquent)
+    - [HTTP](#http)
+        - [Request Macros](#request-macros)
+        - [Validation Rules](#validation-rules)
     - [Helpers](#helpers)
-    - [Blade Components](#blade-components)
-    - [Blade Directives](#blade-directives)
+    - [Blade](#blade)
+        - [Components](#components)
+        - [Directives](#directives)
     - [Extensions](#extensions)
         - [Macros](#macros)
         - [Mixins](#mixins)
@@ -65,9 +69,9 @@ echo Money::ofMinor(100, 'EUR'); // '€1,00'
 
 ### Available Methods
 
-The library has tried to wrap as many brick/money methods as possible
+The package has tried to wrap as many `brick/money` package methods as possible
 but if you encounter a method that we haven't wrapped yet, you can get the underlying instance by calling `->getMoney()`
-on Money or `->getCurrency()` on Currency and
+on `Money` or `->getCurrency()` on `Currency` and
 call it directly:
 
 ```php
@@ -125,7 +129,25 @@ $usd->getCurrency(); // Brick\Money\Currency{}
 $usd->is($eur); // false
 ```
 
-### Validation Rules
+### Eloquent
+
+This package provides Model casts to help with money and currency storage in the database.
+
+### HTTP
+
+This package provides helpers to make working with `money`/`currency` in HTTP Requests easy.
+
+#### Request Macros
+
+```php
+request()->currency('currency'); // Devhammed\LaravelBrickMoney\Currency{}
+
+request()->money('price'); // Devhammed\LaravelBrickMoney\Money{}
+
+request()->money('price', currency: 'EUR', major: true); // Devhammed\LaravelBrickMoney\Money{}
+```
+
+#### Validation Rules
 
 ```php
 namespace App\Http\Requests;
@@ -167,7 +189,11 @@ money(100, 'EUR') // €1,00
 currency('USD') // USD
 ```
 
-### Blade Components
+### Blade
+
+This package provides helpers to make working with money and currency in Blade template easy.
+
+#### Components
 
 ```html
 
@@ -180,7 +206,7 @@ currency('USD') // USD
 <x-currency currency="USD"/> <!-- USD -->
 ```
 
-### Blade Directives
+#### Directives
 
 ```php
 @money(100) // $1.00
