@@ -28,8 +28,6 @@ class TransactionModel extends Model
 
     protected $table = 'transactions';
 
-    protected $guarded = [];
-
     protected $casts = [
         'price' => IntegerMoneyCast::class.':price_currency',
         'price_currency' => CurrencyCast::class,

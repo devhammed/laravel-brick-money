@@ -5,11 +5,21 @@ declare(strict_types=1);
 namespace Devhammed\LaravelBrickMoney\Tests;
 
 use Devhammed\LaravelBrickMoney\Provider;
-use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Config;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Model::unguard();
+
+        Config::set('app.key', 'base64:'.base64_encode(random_bytes(32)));
+    }
+
     protected function getPackageProviders($app): array
     {
         return [
@@ -19,17 +29,11 @@ class TestCase extends Orchestra
 
     public function getEnvironmentSetUp($app): void
     {
-        $app['db']->connection()->getSchemaBuilder()->create('transactions', function (Blueprint $table) {
-            $table->id();
+        //
+    }
 
-            $table->string('price');
-            $table->string('price_currency');
-            $table->json('tax');
-            $table->json('gas_fee');
-            $table->decimal('platform_fee', 40, 20);
-            $table->string('platform_fee_currency');
-
-            $table->timestamps();
-        });
+    protected function defineDatabaseMigrations(): void
+    {
+        $this->loadMigrationsFrom(__DIR__.'/Eloquent/Migrations');
     }
 }
