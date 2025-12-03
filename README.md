@@ -131,7 +131,7 @@ $usd->is($eur); // false
 namespace App\Http\Requests;
 
 use Devhammed\LaravelBrickMoney\Rules\MoneyRule;
-use Devhammed\LaravelBrickMoney\Rules\CurrencyRule
+use Devhammed\LaravelBrickMoney\Rules\CurrencyRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateProductRequest extends FormRequest
