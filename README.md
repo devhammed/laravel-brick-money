@@ -232,8 +232,8 @@ Schema::create('transactions', function (Blueprint $table) {
 ```
 
 > The reason for using `DECIMAL(36, 18)` in the separate column example is to accommodate cryptocurrencies with very
-> high precision like ETH that uses 18 decimal places, you can reduce the scale and precision to match your project
-> requirements.
+> high precision like ETH that uses 18 decimal places, you can reduce or increase the scale and precision to match your
+> project requirements.
 
 #### `CurrencyCast`
 
