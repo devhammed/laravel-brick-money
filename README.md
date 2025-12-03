@@ -56,6 +56,68 @@ echo Money::ofMinor(100); // '$1.00'
 echo Money::ofMinor(100, 'EUR'); // '€1,00'
 ```
 
+### Available Methods
+
+The library has tried to wrap as many brick/money methods as possible
+but if you encounter a method that we haven't wrapped yet, you can get the underlying instance by calling `->getMoney()`
+on Money or `->getCurrency()` on Currency and
+call it directly:
+
+```php
+use Devhammed\LaravelBrickMoney\Money;
+use Devhammed\LaravelBrickMoney\Currency;
+
+$usd = Currency::of('USD');
+$eur = Currency::of('EUR');
+$total = Money::of(1000, $usd);
+$tax = Money::of(100, $usd);
+
+// Money methods
+$total->getCurrency(); // Devhammed\LaravelBrickMoney\Currency{}
+$total->getMoney(); // Brick\Money\Money{}
+$total->getContext(); // Brick\Money\Context\DefaultContext{}
+$total->getAmount(); // Brick\Math\BigDecimal{}
+$total->getMinorAmount(); // Brick\Math\BigDecimal{}
+$total->getUnscaledAmount(); // Brick\Math\BigInteger{}
+$total->getSign(); // 1
+$total->isZero(); // false
+$total->isNegative(); // false
+$total->isNegativeOrZero(); // false
+$total->isPositive(); // true
+$total->isPositiveOrZero(); // true
+$total->compareTo($tax); // 1
+$total->isEqualTo($tax); // false
+$total->isLessThan($tax); // false
+$total->isLessThanOrEqualTo($tax); // false
+$total->isGreaterThan($tax); // true
+$total->isGreaterThanOrEqualTo($tax); // true
+$total->plus($tax); // $1,100
+$total->minus($tax); // $900
+$total->multipliedBy(2); // $2,000
+$total->dividedBy(2); // $500
+$total->allocate(0.7, 0.3); // [$700, $300] 
+$total->split(2); // [$500, $500]
+$total->splitWithRemainder(3); // [$33.33, $33.33, $33.33, $0.01]
+$total->abs(); // $1,000
+$total->negated(); // -$1,000
+$total->format(); // "$1,000"
+
+# Currency methods
+$usd->getCode(); // "USD"
+$usd->getName(); // "US Dollar"
+$usd->getNumericCode(); // 840
+$usd->getSymbol(); // $
+$usd->isSymbolFirst(); // true
+$usd->isSymbolSpaced(); // false
+$usd->getDecimalPlaces(); // 2
+$usd->getDecimalSeparator(); // "."
+$usd->getThousandSeparator(); // ","
+$usd->getPrefix(); // "$"
+$usd->getSuffix(); // ""
+$usd->getCurrency(); // Brick\Money\Currency{code: "USD"}
+$usd->is($eur); // false
+```
+
 ### Helpers
 
 ```php
