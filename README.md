@@ -155,7 +155,7 @@ currency('USD') // USD
 @currency('USD') // USD
 ```
 
-### Macros
+### Extensions
 
 This package implements the Laravel `Macroable` trait, allowing macros and mixins on both `Money` and `Currency`.
 
