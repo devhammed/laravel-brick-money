@@ -165,7 +165,7 @@ class CreateProductRequest extends FormRequest
                 'required',
                 new MoneyRule(
                     min: 0,
-                    max: 1000
+                    max: 1000,
                 ),
             ],
             'currency' => [
