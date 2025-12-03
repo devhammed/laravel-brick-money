@@ -10,13 +10,14 @@
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Usage](#usage)
-    1. [Available Methods](#available-methods)
-    2. [Helpers](#helpers)
-    3. [Blade Components](#blade-components)
-    4. [Blade Directives](#blade-directives)
-    5. [Extensions](#extensions)
-        1. [Macros](#macros)
-        2. [Mixins](#mixins)
+    - [Available Methods](#available-methods)
+    - [Validation Rules](#validation-rules)
+    - [Helpers](#helpers)
+    - [Blade Components](#blade-components)
+    - [Blade Directives](#blade-directives)
+    - [Extensions](#extensions)
+        - [Macros](#macros)
+        - [Mixins](#mixins)
 - [Testing](#testing)
 - [Changelog](#changelog)
 - [Security](#security)
@@ -122,6 +123,36 @@ $usd->getPrefix(); // "$"
 $usd->getSuffix(); // ""
 $usd->getCurrency(); // Brick\Money\Currency{}
 $usd->is($eur); // false
+```
+
+### Validation Rules
+
+```php
+namespace App\Http\Requests;
+
+use Devhammed\LaravelBrickMoney\Rules\MoneyRule;
+use Devhammed\LaravelBrickMoney\Rules\CurrencyRule
+use Illuminate\Foundation\Http\FormRequest;
+
+class CreateProductRequest extends FormRequest
+{
+    public function rules()
+    {
+        return [
+            'price' => [
+                'required',
+                new MoneyRule(
+                    min: 0,
+                    max: 1000
+                ),
+            ],
+            'currency' => [
+                'required',
+                new CurrencyRule(),
+            ],
+        ];
+    }
+}
 ```
 
 ### Helpers
