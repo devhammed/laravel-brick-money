@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Devhammed\LaravelBrickMoney\View\Components;
 
 use Illuminate\Contracts\View\Factory;

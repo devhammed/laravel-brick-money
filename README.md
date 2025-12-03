@@ -133,9 +133,108 @@ $usd->is($eur); // false
 
 This package provides Model casts to help with money and currency storage in the database.
 
+There are currently two supported storage cast types, and each of them support either storing in a single JSON column or
+separate amount and currency columns:
+
+#### `IntegerMoneyCast` (Recommended)
+
+This stores the amount in the currency's minor unit.
+
+Example Model:
+
+```php
+use Devhammed\LaravelBrickMoney\Money;
+use Devhammed\LaravelBrickMoney\Casts\IntegerMoneyCast;
+
+/**
+ * @property Money $amount
+ * @property string $currency
+ * @property Money $tax
+ */
+class Transaction extends Model
+{
+    protected function casts(): array
+    {
+        return [
+            'amount' => IntegerMoneyCast::make('currency'),
+            'tax' => IntegerMoneyCast::make(),
+        ];
+    }
+}
+```
+
+Example Migration:
+
+```php
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+
+Schema::create('transactions', function (Blueprint $table) {
+    $table->id();
+
+    $table->bigInteger('amount');   // e.g., 1000 = $10.00,
+    $table->string('currency');  // currency code e.g. USD
+    $table->json('tax'); // {"amount": "2345", "currency": "TRX"}
+
+    $table->timestamps();
+});
+```
+
+> Some cryptocurrencies, particularly those with very high precision (e.g., ETH uses 18 decimal places) will exceed the
+> limit of `->bigInteger()` so it is recommended to use `->string()` in this case when you
+> are using the separate columns mode.
+
+#### `DecimalMoneyCast`
+
+This stores the amount in the currency's major unit.
+
+Example Model:
+
+```php
+use Devhammed\LaravelBrickMoney\Money;
+use Devhammed\LaravelBrickMoney\Casts\DecimalMoneyCast;
+
+/**
+ * @property Money $amount
+ * @property string $currency
+ * @property Money $tax
+ */
+class Transaction extends Model
+{
+    protected function casts(): array
+    {
+        return [
+            'amount' => DecimalMoneyCast::make('currency'),
+            'tax' => DecimalMoneyCast::make(),
+        ];
+    }
+}
+```
+
+Example Migration:
+
+```php
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+
+Schema::create('transactions', function (Blueprint $table) {
+    $table->id();
+
+    $table->decimal('amount', 36, 18);  // e.g., 10.00 = $10.00,
+    $table->string('currency');  // currency code e.g. USD
+    $table->json('tax'); // {"amount": "23.45", "currency": "TRX"}
+
+    $table->timestamps();
+});
+```
+
+> The reason for using `DECIMAL(36, 18)` in the separate column example is to accommodate cryptocurrencies with very
+> high precision like ETH that uses 18 decimal places, you can reduce the scale and precision to match your project
+> requirements.
+
 ### HTTP
 
-This package provides helpers to work with `money`/`currency` in HTTP Requests.
+This package provides request macros and validation rules to work with `money`/`currency` in HTTP Requests.
 
 #### Request Macros
 

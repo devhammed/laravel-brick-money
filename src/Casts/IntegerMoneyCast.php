@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Devhammed\LaravelBrickMoney\Casts;
 
 use Devhammed\LaravelBrickMoney\Money;
