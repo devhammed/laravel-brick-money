@@ -12,6 +12,9 @@
 - [Usage](#usage)
     - [Available Methods](#available-methods)
     - [Eloquent](#eloquent)
+        - [IntegerMoneyCast](#integermoneycast-recommended)
+        - [DecimalMoneyCast](#decimalmoneycast)
+        - [CurrencyCast](#currencycast)
     - [HTTP](#http)
         - [Request Macros](#request-macros)
         - [Validation Rules](#validation-rules)
@@ -231,6 +234,45 @@ Schema::create('transactions', function (Blueprint $table) {
 > The reason for using `DECIMAL(36, 18)` in the separate column example is to accommodate cryptocurrencies with very
 > high precision like ETH that uses 18 decimal places, you can reduce the scale and precision to match your project
 > requirements.
+
+#### `CurrencyCast`
+
+This is useful for casting currency columns to `Currency`.
+
+Example Model:
+
+```php
+use Devhammed\LaravelBrickMoney\Currency;
+use Devhammed\LaravelBrickMoney\Casts\CurrencyCast;
+
+/**
+ * @property Currency $currency
+ */
+class Transaction extends Model
+{
+    protected function casts(): array
+    {
+        return [
+            'currency' => CurrencyCast::make(),
+        ];
+    }
+}
+```
+
+Example Migration:
+
+```php
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+
+Schema::create('transactions', function (Blueprint $table) {
+    $table->id();
+    $table->string('currency');  // currency code e.g. USD
+    $table->timestamps();
+});
+```
+
+> This can also be used in conjunction with the currency column of the amount casts explained above.
 
 ### HTTP
 
