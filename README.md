@@ -136,7 +136,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class CreateProductRequest extends FormRequest
 {
-    public function rules()
+    public function rules(): array
     {
         return [
             'price' => [
