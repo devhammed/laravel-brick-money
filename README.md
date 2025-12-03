@@ -47,9 +47,9 @@ use Devhammed\LaravelBrickMoney\Currency;
 
 echo Money::of(100); // '$100.00'
 
-echo Money::of(100, Currency::of('EUR')) // '€100,00'
+echo Money::of(100, Currency::of('EUR')); // '€100,00'
 
-echo Money::of(100, 'USD') // '$100.00'
+echo Money::of(100, 'USD'); // '$100.00'
 
 echo Money::ofMinor(100); // '$1.00'
 
@@ -153,6 +153,47 @@ currency('USD') // USD
 @money(100, 'EUR') // €1,00
 
 @currency('USD') // USD
+```
+
+### Macros
+
+This package implements the Laravel `Macroable` trait, allowing macros and mixins on both `Money` and `Currency`.
+
+```php
+use Devhammed\LaravelBrickMoney\Money;
+use Devhammed\LaravelBrickMoney\Currency;
+
+Money::macro('zero', fn(Currency|string $currency) => Money::of(0, $currency));
+
+Money::macro('withPercentage', function (float $percentage): Money {
+    return $this->multipliedBy(1 + ($percentage / 100));
+});
+
+Money::zero()->plus(100)->withPercentage(10); // $110
+```
+
+And with mixins, you can achieve the same thing using a dedicated class:
+
+```php
+use Devhammed\LaravelBrickMoney\Money;
+use Devhammed\LaravelBrickMoney\Currency;
+
+class MoneyExtensions
+{
+    public static function zero(Currency|string $currency): Money
+    {
+        return Money::of(0, $currency);
+    }
+    
+    public function withPercentage(float $percentage): Money
+    {
+        return $this->multipliedBy(1 + ($percentage / 100));
+    }
+}
+
+Money::mixin(new MoneyExtensions());
+
+Money::zero()->plus(100)->withPercentage(10); // $110
 ```
 
 ## Testing
