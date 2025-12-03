@@ -95,7 +95,7 @@ $total->plus($tax); // $1,100
 $total->minus($tax); // $900
 $total->multipliedBy(2); // $2,000
 $total->dividedBy(2); // $500
-$total->allocate(0.7, 0.3); // [$700, $300] 
+$total->allocate(1, 2, 3);
 $total->split(2); // [$500, $500]
 $total->splitWithRemainder(3); // [$33.33, $33.33, $33.33, $0.01]
 $total->abs(); // $1,000
