@@ -16,4 +16,7 @@ parameters:
     ignoreErrors:
             - '#Unsafe usage of new static#'
             - '#Cannot cast mixed to (.*)#'
-            - '#Parameter \#1 \$view of function view expects view-string\|null, string given#'
+            - '#Method Devhammed\\LaravelBrickMoney\\Livewire\\Synthesizers\\MoneySynthesizer::get\(\)#'
+            - '#Method Devhammed\\LaravelBrickMoney\\Livewire\\Synthesizers\\MoneySynthesizer::set\(\)#'
+            - '#Method Devhammed\\LaravelBrickMoney\\Livewire\\Synthesizers\\CurrencySynthesizer::get\(\)#'
+            - '#Method Devhammed\\LaravelBrickMoney\\Livewire\\Synthesizers\\CurrencySynthesizer::set\(\)#'

@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Devhammed\LaravelBrickMoney\Tests;
+namespace Devhammed\LaravelBrickMoney\Tests\Database\Models;
 
 use Devhammed\LaravelBrickMoney\Casts\CurrencyCast;
 use Devhammed\LaravelBrickMoney\Casts\DecimalMoneyCast;
 use Devhammed\LaravelBrickMoney\Casts\IntegerMoneyCast;
 use Devhammed\LaravelBrickMoney\Currency;
 use Devhammed\LaravelBrickMoney\Money;
+use Devhammed\LaravelBrickMoney\Tests\Database\Factories\TransactionModelFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

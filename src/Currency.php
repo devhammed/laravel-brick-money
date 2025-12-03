@@ -8,7 +8,6 @@ use Brick\Money\Currency as BrickCurrency;
 use Brick\Money\Exception\UnknownCurrencyException;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Traits\Macroable;
 use JsonSerializable;
 use Stringable;
@@ -18,7 +17,7 @@ use Stringable;
  *
  * @template-implements Arrayable<string,array>
  */
-class Currency implements Arrayable, Jsonable, JsonSerializable, Renderable, Stringable
+class Currency implements Arrayable, Jsonable, JsonSerializable, Stringable
 {
     use Macroable;
 
@@ -301,18 +300,10 @@ class Currency implements Arrayable, Jsonable, JsonSerializable, Renderable, Str
     }
 
     /**
-     * Get the evaluated contents of the object.
-     */
-    public function render(): string
-    {
-        return $this->code;
-    }
-
-    /**
      * Convert the object to its string representation.
      */
     public function __toString(): string
     {
-        return $this->render();
+        return $this->getCode();
     }
 }

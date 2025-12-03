@@ -14,7 +14,6 @@ use Brick\Money\Money as BrickMoney;
 use Closure;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Traits\Macroable;
 use JsonSerializable;
 use NumberFormatter;
@@ -25,7 +24,7 @@ use Stringable;
  *
  * @template-implements Arrayable<string,string|Currency>
  */
-class Money implements Arrayable, Jsonable, JsonSerializable, Renderable, Stringable
+class Money implements Arrayable, Jsonable, JsonSerializable, Stringable
 {
     use Macroable;
 
@@ -548,18 +547,10 @@ class Money implements Arrayable, Jsonable, JsonSerializable, Renderable, String
     }
 
     /**
-     * Get the evaluated contents of the object.
-     */
-    public function render(): string
-    {
-        return $this->format();
-    }
-
-    /**
      * Convert the object to its string representation.
      */
     public function __toString(): string
     {
-        return $this->render();
+        return $this->format();
     }
 }

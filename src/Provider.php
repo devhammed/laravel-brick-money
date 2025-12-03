@@ -6,8 +6,11 @@ namespace Devhammed\LaravelBrickMoney;
 
 use Brick\Math\RoundingMode;
 use Brick\Money\Context;
+use Devhammed\LaravelBrickMoney\Livewire\Synthesizers\CurrencySynthesizer;
+use Devhammed\LaravelBrickMoney\Livewire\Synthesizers\MoneySynthesizer;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Request;
+use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -69,5 +72,10 @@ class Provider extends PackageServiceProvider
 
             return money($value, $currency, $major, $context, $roundingMode);
         });
+
+        if (class_exists(Livewire::class)) {
+            Livewire::propertySynthesizer(MoneySynthesizer::class);
+            Livewire::propertySynthesizer(CurrencySynthesizer::class);
+        }
     }
 }

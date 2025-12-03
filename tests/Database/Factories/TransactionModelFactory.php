@@ -1,8 +1,11 @@
 <?php
 
-namespace Devhammed\LaravelBrickMoney\Tests;
+declare(strict_types=1);
+
+namespace Devhammed\LaravelBrickMoney\Tests\Database\Factories;
 
 use Devhammed\LaravelBrickMoney\Money;
+use Devhammed\LaravelBrickMoney\Tests\Database\Models\TransactionModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
