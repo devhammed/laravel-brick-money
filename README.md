@@ -114,7 +114,7 @@ $usd->getDecimalSeparator(); // "."
 $usd->getThousandSeparator(); // ","
 $usd->getPrefix(); // "$"
 $usd->getSuffix(); // ""
-$usd->getCurrency(); // Brick\Money\Currency{code: "USD"}
+$usd->getCurrency(); // Brick\Money\Currency{}
 $usd->is($eur); // false
 ```
 
