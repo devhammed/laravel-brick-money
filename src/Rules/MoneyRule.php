@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Devhammed\LaravelBrickMoney\Rules;
 
 use Brick\Math\BigNumber;
+use Brick\Math\RoundingMode;
+use Brick\Money\Context;
 use Closure;
 use Devhammed\LaravelBrickMoney\Money;
 use Illuminate\Contracts\Validation\ValidationRule;
@@ -17,6 +19,8 @@ class MoneyRule implements ValidationRule
         public Money|BigNumber|int|float|string|null $max = null,
         public ?string $currency = null,
         public ?bool $minor = null,
+        public ?Context $context = null,
+        public RoundingMode $roundingMode = RoundingMode::UNNECESSARY
     ) {
         //
     }
@@ -34,7 +38,7 @@ class MoneyRule implements ValidationRule
             return;
         }
 
-        $money = money($value, $this->currency, $this->minor);
+        $money = money($value, $this->currency, $this->minor, $this->context, $this->roundingMode);
 
         if ($this->min !== null && $money->isLessThan($this->min)) {
             $fail(__('brick-money::validation.min_money'));
