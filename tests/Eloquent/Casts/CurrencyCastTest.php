@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Devhammed\LaravelBrickMoney\Currency;
-use Devhammed\LaravelBrickMoney\Tests\Database\Models\TransactionModel;
+use Devhammed\LaravelBrickMoney\Tests\Eloquent\Models\TransactionModel;
 
 it('can cast currency', function (string $currency, int $decimalPlaces, int $numericCode) {
     $model = new TransactionModel([

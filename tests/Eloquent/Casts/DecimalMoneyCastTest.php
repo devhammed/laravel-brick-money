@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Devhammed\LaravelBrickMoney\Money;
-use Devhammed\LaravelBrickMoney\Tests\Database\Models\TransactionModel;
+use Devhammed\LaravelBrickMoney\Tests\Eloquent\Models\TransactionModel;
 
 it('can cast to money with separate currency column', function (float $amount, string $currency, int $expected) {
     $model = new TransactionModel([
