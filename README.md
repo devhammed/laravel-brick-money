@@ -255,7 +255,7 @@ class Transaction extends Model
     protected function casts(): array
     {
         return [
-            'currency' => AsCurrency::make(),
+            'currency' => AsCurrency::class,
         ];
     }
 }
