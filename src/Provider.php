@@ -40,12 +40,12 @@ class Provider extends PackageServiceProvider
 
         Blade::component('currency', View\Components\Currency::class);
 
-        Money::setLocale($this->app->make('translator')->getLocale());
+        Money::locale($this->app->make('translator')->getLocale());
 
         /** @var array<mixed> $currencies */
         $currencies = $this->app->make('config')->get('brick-money.currencies', []);
 
-        Currency::setCurrencies($currencies);
+        Currency::currencies($currencies);
 
         Request::macro('currency', function (string $key, ?string $default = null): ?Currency {
             $value = $this->input($key, $default);

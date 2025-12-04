@@ -18,6 +18,7 @@
     - [HTTP](#http)
         - [Request Macros](#request-macros)
         - [Validation Rules](#validation-rules)
+        - [JSON Serialization](#json-serialization)
     - [Helpers](#helpers)
     - [Views](#views)
         - [Components](#components)
@@ -128,8 +129,6 @@ $usd->isSymbolSpaced(); // false
 $usd->getDecimalPlaces(); // 2
 $usd->getDecimalSeparator(); // "."
 $usd->getThousandSeparator(); // ","
-$usd->getPrefix(); // "$"
-$usd->getSuffix(); // ""
 $usd->getCurrency(); // Brick\Money\Currency{}
 $usd->is($eur); // false
 ```
@@ -318,6 +317,73 @@ class CreateProductRequest extends FormRequest
         ];
     }
 }
+```
+
+#### JSON Serialization
+
+This package provide sane defaults for JSON serialization for both `Money` and `Currency` object but you can customize
+according to your project requirements.
+
+##### Money
+
+Default:
+
+```json
+{
+    "amount": "100",
+    "value": "1.00",
+    "currency": {
+        "name": "US Dollar",
+        "code": "USD",
+        "numeric_code": 840,
+        "symbol": "$",
+        "symbol_first": true,
+        "symbol_spaced": false,
+        "decimal_places": 2,
+        "decimal_separator": ".",
+        "thousand_separator": ","
+    }
+}
+```
+
+Customize:
+
+```php
+use Devhammed\LaravelBrickMoney\Money;
+
+Money::jsonSerializer(fn(Money $money) => [
+    'amount' => (string) $money->getAmount(),
+    'currency' => $money->getCurrency()->getCode(),
+]);
+```
+
+##### Currency
+
+Default:
+
+```json
+{
+    "name": "US Dollar",
+    "code": "USD",
+    "numeric_code": 840,
+    "symbol": "$",
+    "symbol_first": true,
+    "symbol_spaced": false,
+    "decimal_places": 2,
+    "decimal_separator": ".",
+    "thousand_separator": ","
+}
+```
+
+Customize:
+
+```php
+use Devhammed\LaravelBrickMoney\Currency;
+
+Currency::jsonSerializer(fn(Currency $currency) => [
+    'name' => $currency->getName(),
+    'code' => $currency->getCode(),
+]);
 ```
 
 ### Helpers

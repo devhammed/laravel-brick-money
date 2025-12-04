@@ -44,6 +44,11 @@ class Money implements Arrayable, Jsonable, JsonSerializable, Stringable
     protected static string $locale;
 
     /**
+     * The callback to use for JSON serialization.
+     */
+    protected static Closure $jsonSerializer;
+
+    /**
      * Create an instance of Money.
      */
     private function __construct(
@@ -106,19 +111,34 @@ class Money implements Arrayable, Jsonable, JsonSerializable, Stringable
     }
 
     /**
-     * Set the locale to use for formatting.
+     * Get or set the locale to use for formatting.
      */
-    public static function setLocale(?string $locale): void
+    public static function locale(?string $locale = null): string
     {
-        static::$locale = str_replace('-', '_', (string) $locale);
+        if ($locale !== null) {
+            static::$locale = str_replace('-', '_', $locale);
+        }
+
+        return static::$locale ??= getenv('LC_ALL')
+            ?: getenv('LANG')
+                ?: setlocale(LC_ALL, '0')
+                    ?: 'en_US';
     }
 
     /**
-     * Get the locale to use for formatting.
+     * Get or set the callback to use for JSON serialization.
      */
-    public static function getLocale(): string
+    public static function jsonSerializer(?Closure $callback = null): Closure
     {
-        return static::$locale;
+        if ($callback !== null) {
+            static::$jsonSerializer = $callback;
+        }
+
+        return static::$jsonSerializer ??= fn (Money $money) => [
+            'amount' => (string) $money->getMinorAmount(),
+            'value' => (string) $money->getAmount(),
+            'currency' => $money->getCurrency(),
+        ];
     }
 
     /**
@@ -484,8 +504,12 @@ class Money implements Arrayable, Jsonable, JsonSerializable, Stringable
         $amount = $negative ? -$value : $value;
         $thousands = $this->getCurrency()->getThousandSeparator();
         $decimals = $this->getCurrency()->getDecimalSeparator();
-        $prefix = $this->getCurrency()->getPrefix();
-        $suffix = $this->getCurrency()->getSuffix();
+        $prefix = $this->getCurrency()->isSymbolFirst()
+            ? $this->getCurrency()->getSymbol().($this->getCurrency()->isSymbolSpaced() ? ' ' : '')
+            : '';
+        $suffix = $this->getCurrency()->isSymbolFirst()
+            ? ''
+            : ($this->getCurrency()->isSymbolSpaced() ? ' ' : '').$this->getCurrency()->getSymbol();
         $value = number_format($amount, $scale, $decimals, $thousands);
 
         return ($negative ? '-' : '').$prefix.$value.$suffix;
@@ -498,7 +522,7 @@ class Money implements Arrayable, Jsonable, JsonSerializable, Stringable
      */
     public function formatLocale(?string $locale = null, bool $allowWholeNumber = false, ?Closure $callback = null): string
     {
-        $locale ??= static::getLocale();
+        $locale ??= static::locale();
 
         $formatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
 
@@ -546,11 +570,9 @@ class Money implements Arrayable, Jsonable, JsonSerializable, Stringable
      */
     public function toArray(): array
     {
-        return [
-            'amount' => (string) $this->getMinorAmount(),
-            'value' => (string) $this->getAmount(),
-            'currency' => $this->getCurrency()->toArray(),
-        ];
+        $serializer = static::jsonSerializer();
+
+        return $serializer($this);
     }
 
     /**

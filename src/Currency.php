@@ -6,6 +6,7 @@ namespace Devhammed\LaravelBrickMoney;
 
 use Brick\Money\Currency as BrickCurrency;
 use Brick\Money\Exception\UnknownCurrencyException;
+use Closure;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Support\Traits\Macroable;
@@ -79,12 +80,17 @@ class Currency implements Arrayable, Jsonable, JsonSerializable, Stringable
     protected static array $currencies;
 
     /**
+     * The callback to use for JSON serialization.
+     */
+    protected static Closure $jsonSerializer;
+
+    /**
      * Create an instance of Currency.
      */
     private function __construct(string $currency)
     {
         $currency = mb_strtoupper(mb_trim($currency));
-        $currencies = static::getCurrencies();
+        $currencies = static::currencies();
 
         if (! array_key_exists($currency, $currencies)) {
             throw new UnknownCurrencyException(__('brick-money::validation.invalid_selection', [
@@ -123,22 +129,17 @@ class Currency implements Arrayable, Jsonable, JsonSerializable, Stringable
     }
 
     /**
-     * Set the available currencies.
+     * Get or set the available currencies.
      *
-     * @param  array<mixed>  $currencies
-     */
-    public static function setCurrencies(array $currencies): void
-    {
-        static::$currencies = $currencies;
-    }
-
-    /**
-     * Get the available currencies.
-     *
+     * @param  array<mixed>|null  $currencies
      * @return array<mixed>
      */
-    public static function getCurrencies(): array
+    public static function currencies(?array $currencies = null): array
     {
+        if ($currencies !== null) {
+            static::$currencies = $currencies;
+        }
+
         if (! isset(static::$currencies)) {
             $config = require __DIR__.'/../config/brick-money.php';
 
@@ -146,6 +147,28 @@ class Currency implements Arrayable, Jsonable, JsonSerializable, Stringable
         }
 
         return static::$currencies;
+    }
+
+    /**
+     * Get or set the callback to use for JSON serialization.
+     */
+    public static function jsonSerializer(?Closure $callback = null): Closure
+    {
+        if ($callback !== null) {
+            static::$jsonSerializer = $callback;
+        }
+
+        return static::$jsonSerializer ??= fn (Currency $currency) => [
+            'name' => $currency->getName(),
+            'code' => $currency->getCode(),
+            'numeric_code' => $currency->getNumericCode(),
+            'symbol' => $currency->getSymbol(),
+            'symbol_first' => $currency->isSymbolFirst(),
+            'symbol_spaced' => $currency->isSymbolSpaced(),
+            'decimal_places' => $currency->getDecimalPlaces(),
+            'decimal_separator' => $currency->getDecimalSeparator(),
+            'thousand_separator' => $currency->getThousandSeparator(),
+        ];
     }
 
     /**
@@ -221,30 +244,6 @@ class Currency implements Arrayable, Jsonable, JsonSerializable, Stringable
     }
 
     /**
-     * Get the amount prefix.
-     */
-    public function getPrefix(): string
-    {
-        if (! $this->isSymbolFirst()) {
-            return '';
-        }
-
-        return $this->getSymbol().($this->isSymbolSpaced() ? ' ' : '');
-    }
-
-    /**
-     * Get the amount suffix.
-     */
-    public function getSuffix(): string
-    {
-        if ($this->isSymbolFirst()) {
-            return '';
-        }
-
-        return ($this->isSymbolSpaced() ? ' ' : '').$this->getSymbol();
-    }
-
-    /**
      * Get the `Brick\Money\Currency` instance.
      */
     public function getCurrency(): BrickCurrency
@@ -268,19 +267,9 @@ class Currency implements Arrayable, Jsonable, JsonSerializable, Stringable
      */
     public function toArray(): array
     {
-        return [
-            'name' => $this->getName(),
-            'code' => $this->getCode(),
-            'numeric_code' => $this->getNumericCode(),
-            'symbol' => $this->getSymbol(),
-            'symbol_first' => $this->isSymbolFirst(),
-            'symbol_spaced' => $this->isSymbolSpaced(),
-            'decimal_places' => $this->getDecimalPlaces(),
-            'decimal_separator' => $this->getDecimalSeparator(),
-            'thousand_separator' => $this->getThousandSeparator(),
-            'prefix' => $this->getPrefix(),
-            'suffix' => $this->getSuffix(),
-        ];
+        $serializer = static::jsonSerializer();
+
+        return $serializer($this);
     }
 
     /**

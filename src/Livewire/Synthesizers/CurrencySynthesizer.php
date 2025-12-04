@@ -47,8 +47,6 @@ class CurrencySynthesizer extends Synth
             'decimalPlaces' => $target->getDecimalPlaces(),
             'decimalSeparator' => $target->getDecimalSeparator(),
             'thousandSeparator' => $target->getThousandSeparator(),
-            'prefix' => $target->getPrefix(),
-            'suffix' => $target->getSuffix(),
             default => throw new UnknownCurrencyException(__('brick-money::validation.invalid_selection', [
                 'attribute' => 'property',
             ])),
