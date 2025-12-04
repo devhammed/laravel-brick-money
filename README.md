@@ -341,6 +341,7 @@ Default:
         "symbol_spaced": false,
         "decimal_places": 2,
         "decimal_separator": ".",
+        "thousand_places": 3,
         "thousand_separator": ","
     }
 }
@@ -371,6 +372,7 @@ Default:
     "symbol_spaced": false,
     "decimal_places": 2,
     "decimal_separator": ".",
+    "thousand_places": 3,
     "thousand_separator": ","
 }
 ```

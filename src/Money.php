@@ -119,10 +119,7 @@ class Money implements Arrayable, Jsonable, JsonSerializable, Stringable
             static::$locale = str_replace('-', '_', $locale);
         }
 
-        return static::$locale ??= getenv('LC_ALL')
-            ?: getenv('LANG')
-                ?: setlocale(LC_ALL, '0')
-                    ?: 'en_US';
+        return static::$locale ??= 'en_US';
     }
 
     /**
@@ -532,8 +529,10 @@ class Money implements Arrayable, Jsonable, JsonSerializable, Stringable
             $scale = $this->getAmount()->getScale();
         }
 
+        $formatter->setSymbol(NumberFormatter::CURRENCY_SYMBOL, $this->getCurrency()->getSymbol());
         $formatter->setSymbol(NumberFormatter::DECIMAL_SEPARATOR_SYMBOL, $this->getCurrency()->getDecimalSeparator());
         $formatter->setSymbol(NumberFormatter::GROUPING_SEPARATOR_SYMBOL, $this->getCurrency()->getThousandSeparator());
+        $formatter->setAttribute(NumberFormatter::GROUPING_SIZE, $this->getCurrency()->getThousandPlaces());
         $formatter->setAttribute(NumberFormatter::MIN_FRACTION_DIGITS, $scale);
         $formatter->setAttribute(NumberFormatter::MAX_FRACTION_DIGITS, $scale);
 
@@ -547,16 +546,16 @@ class Money implements Arrayable, Jsonable, JsonSerializable, Stringable
     /**
      * Returns the amount of the given parameter.
      *
-     * If the parameter is a money, its currency is checked against this money's currency.
+     * If the parameter is money, its currency is checked against this money's currency.
      */
     protected function getAmountOf(Money|BigNumber|int|float|string $that): BigNumber|int|float|string
     {
         if ($that instanceof Money) {
             if (! $that->getCurrency()->is($this->getCurrency())) {
-                throw new MoneyMismatchException(__('brick-money::validation.currencies_mismatch', [
-                    'expected' => $this->getCurrency()->getCode(),
-                    'actual' => $that->getCurrency()->getCode(),
-                ]));
+                throw MoneyMismatchException::currencyMismatch(
+                    $this->getCurrency()->getCurrency(),
+                    $that->getCurrency()->getCurrency(),
+                );
             }
 
             return $that->getAmount();

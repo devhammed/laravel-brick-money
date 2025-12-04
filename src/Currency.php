@@ -63,6 +63,11 @@ class Currency implements Arrayable, Jsonable, JsonSerializable, Stringable
     protected string $decimalSeparator;
 
     /**
+     * The thousand places.
+     */
+    protected int $thousandPlaces;
+
+    /**
      * The thousand separator.
      */
     protected string $thousandSeparator;
@@ -93,9 +98,7 @@ class Currency implements Arrayable, Jsonable, JsonSerializable, Stringable
         $currencies = static::currencies();
 
         if (! array_key_exists($currency, $currencies)) {
-            throw new UnknownCurrencyException(__('brick-money::validation.invalid_selection', [
-                'attribute' => 'code',
-            ]));
+            throw UnknownCurrencyException::unknownCurrency($currency);
         }
 
         $attributes = (array) $currencies[$currency];
@@ -107,6 +110,7 @@ class Currency implements Arrayable, Jsonable, JsonSerializable, Stringable
         $this->symbolSpaced = (bool) $attributes['symbol_spaced'];
         $this->decimalPlaces = (int) $attributes['decimal_places'];
         $this->decimalSeparator = (string) $attributes['decimal_separator'];
+        $this->thousandPlaces = (int) $attributes['thousand_places'];
         $this->thousandSeparator = (string) $attributes['thousand_separator'];
         $this->currency = new BrickCurrency(
             $this->code,
@@ -167,6 +171,7 @@ class Currency implements Arrayable, Jsonable, JsonSerializable, Stringable
             'symbol_spaced' => $currency->isSymbolSpaced(),
             'decimal_places' => $currency->getDecimalPlaces(),
             'decimal_separator' => $currency->getDecimalSeparator(),
+            'thousand_places' => $currency->getThousandPlaces(),
             'thousand_separator' => $currency->getThousandSeparator(),
         ];
     }
@@ -233,6 +238,14 @@ class Currency implements Arrayable, Jsonable, JsonSerializable, Stringable
     public function getDecimalSeparator(): string
     {
         return $this->decimalSeparator;
+    }
+
+    /**
+     * Get the currency thousand places.
+     */
+    public function getThousandPlaces(): int
+    {
+        return $this->thousandPlaces;
     }
 
     /**
