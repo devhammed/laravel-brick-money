@@ -570,9 +570,7 @@ class Money implements Arrayable, Jsonable, JsonSerializable, Stringable
      */
     public function toArray(): array
     {
-        $serializer = static::jsonSerializer();
-
-        return $serializer($this);
+        return static::jsonSerializer()($this);
     }
 
     /**
