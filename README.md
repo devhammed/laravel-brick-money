@@ -128,6 +128,7 @@ $usd->isSymbolFirst(); // true
 $usd->isSymbolSpaced(); // false
 $usd->getDecimalPlaces(); // 2
 $usd->getDecimalSeparator(); // "."
+$usd->getThousandPlaces(); // 3
 $usd->getThousandSeparator(); // ","
 $usd->getCurrency(); // Brick\Money\Currency{}
 $usd->is($eur); // false
