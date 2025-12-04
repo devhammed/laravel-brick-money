@@ -2,6 +2,15 @@
 
 All notable changes to `laravel-brick-money` will be documented in this file.
 
+## v1.0.2
+
+### What's Changed
+
+- Renamed casts to match Laravel best practices (BREAKING CHANGE).
+- Moved `AsMoneyCast` abstract class logic to a trait to avoid mistakenly using it.
+
+**Full Changelog**: https://github.com/devhammed/laravel-brick-money/compare/1.0.1...1.0.2
+
 ## v1.0.1
 
 ### What's Changed
