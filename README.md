@@ -444,7 +444,7 @@ Money::macro('withPercentage', function (float $percentage): Money {
     return $this->multipliedBy(1 + ($percentage / 100));
 });
 
-Money::zero()->plus(100)->withPercentage(10); // $110
+Money::zero('USD')->plus(100)->withPercentage(10); // $110
 ```
 
 #### Mixins
@@ -470,7 +470,7 @@ class MoneyExtensions
 
 Money::mixin(new MoneyExtensions());
 
-Money::zero()->plus(100)->withPercentage(10); // $110
+Money::zero('USD')->plus(100)->withPercentage(10); // $110
 ```
 
 ## Testing
