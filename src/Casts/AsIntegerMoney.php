@@ -4,10 +4,17 @@ declare(strict_types=1);
 
 namespace Devhammed\LaravelBrickMoney\Casts;
 
+use Devhammed\LaravelBrickMoney\Concerns\AsMoneyCast;
 use Devhammed\LaravelBrickMoney\Money;
+use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 
-class AsIntegerMoney extends AsMoney
+/**
+ * @template-implements CastsAttributes<Money,Money>
+ */
+class AsIntegerMoney implements CastsAttributes
 {
+    use AsMoneyCast;
+
     protected function serializeMoney(Money $value): string
     {
         return (string) $value->getMinorAmount();

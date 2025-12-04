@@ -2,17 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Devhammed\LaravelBrickMoney\Casts;
+namespace Devhammed\LaravelBrickMoney\Concerns;
 
 use Brick\Money\Exception\MoneyMismatchException;
 use Devhammed\LaravelBrickMoney\Money;
-use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * @template-implements CastsAttributes<Money,Money>
- */
-abstract class AsMoney implements CastsAttributes
+trait AsMoneyCast
 {
     /**
      * The currency column.
@@ -25,7 +21,7 @@ abstract class AsMoney implements CastsAttributes
     protected ?string $amountColumn = null;
 
     /**
-     * Create instance of the cast.
+     * Create an instance of the cast.
      */
     public function __construct(?string $currencyColumn = null, ?string $amountColumn = null)
     {
