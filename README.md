@@ -12,9 +12,9 @@
 - [Usage](#usage)
     - [Available Methods](#available-methods)
     - [Eloquent](#eloquent)
-        - [IntegerMoneyCast](#integermoneycast-recommended)
-        - [DecimalMoneyCast](#decimalmoneycast)
-        - [CurrencyCast](#currencycast)
+        - [AsIntegerMoney Cast](#asintegermoney-recommended)
+        - [AsDecimalMoney Cast](#asdecimalmoney)
+        - [AsCurrency Cast](#ascurrency)
     - [HTTP](#http)
         - [Request Macros](#request-macros)
         - [Validation Rules](#validation-rules)
@@ -141,7 +141,7 @@ This package provides Model casts to help with money and currency storage in the
 There are currently two supported storage cast types, and each of them support either storing in a single JSON column or
 separate amount and currency columns:
 
-#### `IntegerMoneyCast` (Recommended)
+#### `AsIntegerMoney` (Recommended)
 
 This stores the amount in the currency's minor unit.
 
@@ -237,7 +237,7 @@ Schema::create('transactions', function (Blueprint $table) {
 > high precision like ETH that uses 18 decimal places, you can reduce or increase the scale and precision to match your
 > project requirements.
 
-#### `CurrencyCast`
+#### `AsCurrency`
 
 This is useful for casting currency columns to `Currency`.
 
