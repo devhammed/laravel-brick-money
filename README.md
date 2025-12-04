@@ -114,6 +114,7 @@ $total->split(2); // [$500, $500]
 $total->splitWithRemainder(3); // [$33.33, $33.33, $33.33, $0.01]
 $total->abs(); // $1,000
 $total->convertedTo($eur, 0.91); // $910
+$total->convertedTo('NGN', 1457); // N1,457,000
 $total->negated(); // -$1,000
 $total->format(); // "$1,000"
 
