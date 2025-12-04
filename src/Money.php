@@ -458,10 +458,6 @@ class Money implements Arrayable, Jsonable, JsonSerializable, Stringable
             $currency = Currency::of($currency);
         }
 
-        if ($context === null) {
-            $context = $this->getContext();
-        }
-
         return static::ofMoney($this->getMoney()->convertedTo(
             $currency->getCurrency(),
             $exchangeRate,
