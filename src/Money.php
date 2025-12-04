@@ -362,7 +362,7 @@ class Money implements Arrayable, Jsonable, JsonSerializable, Stringable
     {
         $monies = $this->getMoney()->allocate(...$ratios);
 
-        return array_map(fn ($ratio) => static::ofMoney($ratio), $monies);
+        return array_map(fn ($money) => static::ofMoney($money), $monies);
     }
 
     /**
@@ -381,7 +381,7 @@ class Money implements Arrayable, Jsonable, JsonSerializable, Stringable
     {
         $monies = $this->getMoney()->allocateWithRemainder(...$ratios);
 
-        return array_map(fn ($ratio) => static::ofMoney($ratio), $monies);
+        return array_map(fn ($money) => static::ofMoney($money), $monies);
     }
 
     /**
@@ -401,7 +401,7 @@ class Money implements Arrayable, Jsonable, JsonSerializable, Stringable
     {
         $monies = $this->getMoney()->split($parts);
 
-        return array_map(fn ($monies) => static::ofMoney($monies), $monies);
+        return array_map(fn ($money) => static::ofMoney($money), $monies);
     }
 
     /**
@@ -418,7 +418,7 @@ class Money implements Arrayable, Jsonable, JsonSerializable, Stringable
     {
         $monies = $this->getMoney()->splitWithRemainder($parts);
 
-        return array_map(fn ($monies) => static::ofMoney($monies), $monies);
+        return array_map(fn ($money) => static::ofMoney($money), $monies);
     }
 
     /**
@@ -442,24 +442,32 @@ class Money implements Arrayable, Jsonable, JsonSerializable, Stringable
     }
 
     /**
-     * Returns the amount of the given parameter.
+     * Converts this Money to another currency, using an exchange rate.
      *
-     * If the parameter is a money, its currency is checked against this money's currency.
+     * By default, the resulting Money has the same context as this Money. This can be overridden by providing a Context.
+     *
+     * For example, converting a default money of `USD 1.23` to EUR with an exchange rate of `0.91` and RoundingMode::UP will yield `EUR 1.12`.
      */
-    protected function getAmountOf(Money|BigNumber|int|float|string $that): BigNumber|int|float|string
-    {
-        if ($that instanceof Money) {
-            if (! $that->getCurrency()->is($this->getCurrency())) {
-                throw new MoneyMismatchException(__('brick-money::validation.currencies_mismatch', [
-                    'expected' => $this->getCurrency()->getCode(),
-                    'actual' => $that->getCurrency()->getCode(),
-                ]));
-            }
-
-            return $that->getAmount();
+    public function convertedTo(
+        Currency|string $currency,
+        BigNumber|float|int|string $exchangeRate,
+        ?Context $context = null,
+        RoundingMode $roundingMode = RoundingMode::UNNECESSARY
+    ): Money {
+        if (! $currency instanceof Currency) {
+            $currency = Currency::of($currency);
         }
 
-        return $that;
+        if ($context === null) {
+            $context = $this->getContext();
+        }
+
+        return static::ofMoney($this->getMoney()->convertedTo(
+            $currency->getCurrency(),
+            $exchangeRate,
+            $context,
+            $roundingMode,
+        ));
     }
 
     /**
@@ -514,6 +522,27 @@ class Money implements Arrayable, Jsonable, JsonSerializable, Stringable
         }
 
         return (string) $formatter->formatCurrency($this->getAmount()->toFloat(), $this->getCurrency()->getCode());
+    }
+
+    /**
+     * Returns the amount of the given parameter.
+     *
+     * If the parameter is a money, its currency is checked against this money's currency.
+     */
+    protected function getAmountOf(Money|BigNumber|int|float|string $that): BigNumber|int|float|string
+    {
+        if ($that instanceof Money) {
+            if (! $that->getCurrency()->is($this->getCurrency())) {
+                throw new MoneyMismatchException(__('brick-money::validation.currencies_mismatch', [
+                    'expected' => $this->getCurrency()->getCode(),
+                    'actual' => $that->getCurrency()->getCode(),
+                ]));
+            }
+
+            return $that->getAmount();
+        }
+
+        return $that;
     }
 
     /**
