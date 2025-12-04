@@ -321,7 +321,7 @@ class CreateProductRequest extends FormRequest
 
 #### JSON Serialization
 
-This package provide sane defaults for JSON serialization for both `Money` and `Currency` object but you can customize
+This package provides JSON serialization for both `Money` and `Currency` objects but you can customize
 according to your project requirements.
 
 ##### Money
