@@ -11,16 +11,8 @@ use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 /**
  * @template-implements CastsAttributes<Currency,Currency>
  */
-class CurrencyCast implements CastsAttributes
+class AsCurrency implements CastsAttributes
 {
-    /**
-     * Create a currency cast definition.
-     */
-    public static function make(): string
-    {
-        return static::class;
-    }
-
     /**
      * Transform the attribute from the underlying model values.
      */

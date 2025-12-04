@@ -149,7 +149,7 @@ Example Model:
 
 ```php
 use Devhammed\LaravelBrickMoney\Money;
-use Devhammed\LaravelBrickMoney\Casts\IntegerMoneyCast;
+use Devhammed\LaravelBrickMoney\Casts\AsIntegerMoney;
 
 /**
  * @property Money $amount
@@ -161,8 +161,8 @@ class Transaction extends Model
     protected function casts(): array
     {
         return [
-            'amount' => IntegerMoneyCast::make('currency'),
-            'tax' => IntegerMoneyCast::make(),
+            'amount' => AsIntegerMoney::of('currency'),
+            'tax' => AsIntegerMoney::class,
         ];
     }
 }
@@ -189,7 +189,7 @@ Schema::create('transactions', function (Blueprint $table) {
 > limit of `->bigInteger()` so it is recommended to use `->string()` in this case when you
 > are using the separate columns mode.
 
-#### `DecimalMoneyCast`
+#### `AsDecimalMoney`
 
 This stores the amount in the currency's major unit.
 
@@ -197,7 +197,7 @@ Example Model:
 
 ```php
 use Devhammed\LaravelBrickMoney\Money;
-use Devhammed\LaravelBrickMoney\Casts\DecimalMoneyCast;
+use Devhammed\LaravelBrickMoney\Casts\AsDecimalMoney;
 
 /**
  * @property Money $amount
@@ -209,8 +209,8 @@ class Transaction extends Model
     protected function casts(): array
     {
         return [
-            'amount' => DecimalMoneyCast::make('currency'),
-            'tax' => DecimalMoneyCast::make(),
+            'amount' => AsDecimalMoney::of('currency'),
+            'tax' => AsDecimalMoney::class,
         ];
     }
 }
@@ -245,7 +245,7 @@ Example Model:
 
 ```php
 use Devhammed\LaravelBrickMoney\Currency;
-use Devhammed\LaravelBrickMoney\Casts\CurrencyCast;
+use Devhammed\LaravelBrickMoney\Casts\AsCurrency;
 
 /**
  * @property Currency $currency
@@ -255,7 +255,7 @@ class Transaction extends Model
     protected function casts(): array
     {
         return [
-            'currency' => CurrencyCast::make(),
+            'currency' => AsCurrency::make(),
         ];
     }
 }

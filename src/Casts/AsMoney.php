@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @template-implements CastsAttributes<Money,Money>
  */
-abstract class MoneyCast implements CastsAttributes
+abstract class AsMoney implements CastsAttributes
 {
     /**
      * The currency column.
@@ -37,12 +37,9 @@ abstract class MoneyCast implements CastsAttributes
     /**
      * Create a money cast definition.
      */
-    public static function make(?string $currencyColumn = null, ?string $amountColumn = null): string
+    public static function of(string $currencyColumn, ?string $amountColumn = null): string
     {
-        return static::class
-            .(($currencyColumn || $amountColumn) ? ':' : '')
-            .($currencyColumn ?? '')
-            .($amountColumn ? ",{$amountColumn}" : '');
+        return static::class.":{$currencyColumn}".($amountColumn ? ",{$amountColumn}" : '');
     }
 
     /**
@@ -85,7 +82,7 @@ abstract class MoneyCast implements CastsAttributes
             ]));
         }
 
-        $money = $this->dehydrate($amount, $currency);
+        $money = $this->deserializeMoney($amount, $currency);
 
         if ($this->usesJson()) {
             return $money;
@@ -111,7 +108,7 @@ abstract class MoneyCast implements CastsAttributes
             ]));
         }
 
-        $amount = $this->hydrate($value);
+        $amount = $this->serializeMoney($value);
 
         $currency = (string) $value->getCurrency();
 
@@ -129,7 +126,7 @@ abstract class MoneyCast implements CastsAttributes
     }
 
     /**
-     * Determine if cast should be JSON.
+     * Determine if the cast should be JSON.
      */
     protected function usesJson(): bool
     {
@@ -139,10 +136,10 @@ abstract class MoneyCast implements CastsAttributes
     /**
      * Serialize the given value.
      */
-    abstract protected function hydrate(Money $value): string;
+    abstract protected function serializeMoney(Money $value): string;
 
     /**
      * Deserialize the given value.
      */
-    abstract protected function dehydrate(string|int|float $amount, string $currency): Money;
+    abstract protected function deserializeMoney(string|int|float $amount, string $currency): Money;
 }

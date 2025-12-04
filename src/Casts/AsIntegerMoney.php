@@ -6,14 +6,14 @@ namespace Devhammed\LaravelBrickMoney\Casts;
 
 use Devhammed\LaravelBrickMoney\Money;
 
-class IntegerMoneyCast extends MoneyCast
+class AsIntegerMoney extends AsMoney
 {
-    protected function hydrate(Money $value): string
+    protected function serializeMoney(Money $value): string
     {
         return (string) $value->getMinorAmount();
     }
 
-    protected function dehydrate(float|int|string $amount, string $currency): Money
+    protected function deserializeMoney(float|int|string $amount, string $currency): Money
     {
         return Money::ofMinor($amount, $currency);
     }

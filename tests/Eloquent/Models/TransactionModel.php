@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Devhammed\LaravelBrickMoney\Tests\Eloquent\Models;
 
-use Devhammed\LaravelBrickMoney\Casts\CurrencyCast;
-use Devhammed\LaravelBrickMoney\Casts\DecimalMoneyCast;
-use Devhammed\LaravelBrickMoney\Casts\IntegerMoneyCast;
+use Devhammed\LaravelBrickMoney\Casts\AsCurrency;
+use Devhammed\LaravelBrickMoney\Casts\AsDecimalMoney;
+use Devhammed\LaravelBrickMoney\Casts\AsIntegerMoney;
 use Devhammed\LaravelBrickMoney\Currency;
 use Devhammed\LaravelBrickMoney\Money;
 use Devhammed\LaravelBrickMoney\Tests\Eloquent\Factories\TransactionModelFactory;
@@ -29,12 +29,12 @@ class TransactionModel extends Model
     protected $table = 'transactions';
 
     protected $casts = [
-        'price' => IntegerMoneyCast::class.':price_currency',
-        'price_currency' => CurrencyCast::class,
-        'tax' => IntegerMoneyCast::class,
-        'gas_fee' => DecimalMoneyCast::class,
-        'platform_fee' => DecimalMoneyCast::class.':platform_fee_currency',
-        'platform_fee_currency' => CurrencyCast::class,
+        'price' => AsIntegerMoney::class.':price_currency',
+        'price_currency' => AsCurrency::class,
+        'tax' => AsIntegerMoney::class,
+        'gas_fee' => AsDecimalMoney::class,
+        'platform_fee' => AsDecimalMoney::class.':platform_fee_currency',
+        'platform_fee_currency' => AsCurrency::class,
     ];
 
     protected static function newFactory(): TransactionModelFactory
