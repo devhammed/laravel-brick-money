@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-brick-money` will be documented in this file.
 
+## v1.0.3
+
+### What's Changed
+
+- Laravel 13 compatibility
+
+Full Changelog: https://github.com/devhammed/laravel-brick-money/compare/1.0.2...1.0.3
+
 ## v1.0.2
 
 ### What's Changed
