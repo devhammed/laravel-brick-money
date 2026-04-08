@@ -24,6 +24,7 @@
     },
     "require-dev": {
         "ext-intl": "*",
+        "filament/filament": "^4.0|^5.0",
         "larastan/larastan": "^2.0||^3.0",
         "laravel/pint": "^1.14",
         "livewire/livewire": "^3.0",
@@ -39,7 +40,8 @@
     },
     "suggest": {
         "ext-intl": "Required to format Money objects.",
-        "livewire/livewire": "Required to use Livewire Synthesizers."
+        "livewire/livewire": "Required to use Livewire Synthesizers.",
+        "filament/filament": "Required to use Filament MoneyInput and MoneyColumn components."
     },
     "autoload": {
         "psr-4": {
