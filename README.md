@@ -26,6 +26,8 @@
     - [Extensions](#extensions)
         - [Macros](#macros)
         - [Mixins](#mixins)
+    - [Livewire](#livewire)
+        - [Filament](#filament)
 - [Testing](#testing)
 - [Changelog](#changelog)
 - [Security](#security)

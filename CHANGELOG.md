@@ -2,6 +2,17 @@
 
 All notable changes to `laravel-brick-money` will be documented in this file.
 
+## v1.0.4
+
+### What's Changed
+
+- Dropped Laravel 10 support
+- Dropped PHP 8.2 support
+- Added `MoneyInput` component for Filament Forms
+- Added `MoneyField` component for Filament Tables
+
+Full Changelog: https://github.com/devhammed/laravel-brick-money/compare/1.0.3...1.0.4
+
 ## v1.0.3
 
 ### What's Changed
