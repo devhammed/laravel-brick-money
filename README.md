@@ -541,8 +541,6 @@ use Devhammed\LaravelBrickMoney\Filament\Forms\Components\MoneyInput;
 MoneyInput::for('price')
 ```
 
-NOTE: You must not use the `make()` method on the `MoneyInput` class directly, as we extended the `FusedGroup` component to provide this functionality and PHP does not support overriding methods with different signatures.
-
 It will automatically use the configured currencies and default currency to populate the currency selector.
 
 You can also specify a custom list of currencies and a default currency:
@@ -566,8 +564,8 @@ And you can customize the underlying input and select components:
 
 ```php
 MoneyInput::for('price')
-    ->amountInput(fn (TextInput $input) => $input->placeholder('0.00'))
-    ->currencySelect(fn (Select $select) => $select->searchable())
+    ->currencySelect(fn ($select) => $select->columnSpan(['xl' => 3]))
+    ->amountInput(fn ($input) => $input->columnSpan(['xl' => 9]))
 ```
 
 ### Tables
@@ -580,7 +578,7 @@ use Devhammed\LaravelBrickMoney\Filament\Tables\Columns\MoneyColumn;
 MoneyColumn::make('price')
 ```
 
-It will automatically format the `Money` object using its `format()` method.
+It will automatically format the `Money` object using its `format()` method, and it extended the `TextColumn` component so you can use any of its methods to further customize the column.
 
 ## Testing
 
