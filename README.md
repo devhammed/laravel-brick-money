@@ -27,7 +27,10 @@
         - [Macros](#macros)
         - [Mixins](#mixins)
     - [Livewire](#livewire)
-        - [Filament](#filament)
+    - [Filament](#filament)
+        - [Plugin](#plugin)
+        - [Forms](#forms)
+        - [Tables](#tables)
 - [Testing](#testing)
 - [Changelog](#changelog)
 - [Security](#security)
@@ -477,6 +480,107 @@ Money::mixin(new MoneyExtensions());
 
 Money::zero('USD')->plus(100)->withPercentage(10); // $110
 ```
+
+## Livewire
+
+This package provides automatic support for [Livewire](https://livewire.laravel.com/) by registering property synthesizers for `Money` and `Currency` objects.
+
+This allows you to use `Money` and `Currency` objects directly as Livewire properties:
+
+```php
+use Devhammed\LaravelBrickMoney\Money;
+use Livewire\Component;
+
+class Wallet extends Component
+{
+    public Money $balance;
+
+    public function mount()
+    {
+        $this->balance = Money::of(100, 'USD');
+    }
+
+    public function addTenDollars()
+    {
+        $this->balance = $this->balance->plus(10);
+    }
+
+    public function render()
+    {
+        return view('livewire.wallet');
+    }
+}
+```
+
+## Filament
+
+This package also provides a [Filament](https://filamentphp.com/) plugin and components to work with money and currency.
+
+### Plugin
+
+To use the Filament components, you must first add the `MoneyPlugin` to your Filament panel configuration. This plugin handles the JSON serialization of `Money` objects for the frontend.
+
+```php
+use Devhammed\LaravelBrickMoney\Filament\MoneyPlugin;
+
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        // ...
+        ->plugin(MoneyPlugin::make());
+}
+```
+
+### Forms
+
+The `MoneyInput` component allows you to manage money fields in your Filament forms. It provides a fused group of an amount input and a currency selector.
+
+```php
+use Devhammed\LaravelBrickMoney\Filament\Forms\Components\MoneyInput;
+
+MoneyInput::for('price')
+```
+
+NOTE: You must not use the `make()` method on the `MoneyInput` class directly, as we extended the `FusedGroup` component to provide this functionality and PHP does not support overriding methods with different signatures.
+
+It will automatically use the configured currencies and default currency to populate the currency selector.
+
+You can also specify a custom list of currencies and a default currency:
+
+```php
+use Devhammed\LaravelBrickMoney\Filament\Forms\Components\MoneyInput;
+
+MoneyInput::for('price')
+    ->defaultCurrency('USD')
+    ->currencies(['USD' => 'US Dollar', 'EUR' => 'Euro'])
+```
+
+You can also fix the currency so only the amount is editable:
+
+```php
+MoneyInput::for('price')
+    ->fixedCurrency()
+```
+
+And you can customize the underlying input and select components:
+
+```php
+MoneyInput::for('price')
+    ->amountInput(fn (TextInput $input) => $input->placeholder('0.00'))
+    ->currencySelect(fn (Select $select) => $select->searchable())
+```
+
+### Tables
+
+The `MoneyColumn` allows you to display money values in your Filament tables.
+
+```php
+use Devhammed\LaravelBrickMoney\Filament\Tables\Columns\MoneyColumn;
+
+MoneyColumn::make('price')
+```
+
+It will automatically format the `Money` object using its `format()` method.
 
 ## Testing
 
