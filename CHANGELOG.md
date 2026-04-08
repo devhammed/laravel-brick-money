@@ -2,6 +2,12 @@
 
 All notable changes to `laravel-brick-money` will be documented in this file.
 
+## v1.0.5
+
+### What's Changed
+
+- Fixed issue with Composer package tagging
+
 ## v1.0.4
 
 ### What's Changed
