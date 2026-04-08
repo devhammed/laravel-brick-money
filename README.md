@@ -541,6 +541,8 @@ use Devhammed\LaravelBrickMoney\Filament\Forms\Components\MoneyInput;
 MoneyInput::for('price')
 ```
 
+NOTE: You must not use the `make()` method on the `MoneyInput` class directly, as we extended the `FusedGroup` component to provide this functionality and PHP does not support overriding methods with different signatures.
+
 It will automatically use the configured currencies and default currency to populate the currency selector.
 
 You can also specify a custom list of currencies and a default currency:
