@@ -71,7 +71,7 @@ class Money implements Arrayable, Jsonable, JsonSerializable, Stringable
         BigNumber|float|int|string $amount,
         Currency|string $currency,
         ?Context $context = null,
-        RoundingMode $roundingMode = RoundingMode::UNNECESSARY
+        RoundingMode $roundingMode = RoundingMode::Unnecessary
     ): static {
         if (! $currency instanceof Currency) {
             $currency = Currency::of($currency);
@@ -91,7 +91,7 @@ class Money implements Arrayable, Jsonable, JsonSerializable, Stringable
         BigNumber|float|int|string $amount,
         Currency|string $currency,
         ?Context $context = null,
-        RoundingMode $roundingMode = RoundingMode::UNNECESSARY
+        RoundingMode $roundingMode = RoundingMode::Unnecessary
     ): static {
         if (! $currency instanceof Currency) {
             $currency = Currency::of($currency);
@@ -300,7 +300,7 @@ class Money implements Arrayable, Jsonable, JsonSerializable, Stringable
      *
      * The resulting Money has the same context as this Money. If the result needs rounding to fit this context, a rounding mode can be provided. If a rounding mode is not provided and rounding is necessary, an exception is thrown.
      */
-    public function plus(Money|BigNumber|float|int|string $that, RoundingMode $roundingMode = RoundingMode::UNNECESSARY): static
+    public function plus(Money|BigNumber|float|int|string $that, RoundingMode $roundingMode = RoundingMode::Unnecessary): static
     {
         return static::ofMoney($this->getMoney()->plus($this->getAmountOf($that), $roundingMode));
     }
@@ -312,7 +312,7 @@ class Money implements Arrayable, Jsonable, JsonSerializable, Stringable
      *
      * The resulting Money has the same context as this Money. If the result needs rounding to fit this context, a rounding mode can be provided. If a rounding mode is not provided and rounding is necessary, an exception is thrown.
      */
-    public function minus(Money|BigNumber|float|int|string $that, RoundingMode $roundingMode = RoundingMode::UNNECESSARY): static
+    public function minus(Money|BigNumber|float|int|string $that, RoundingMode $roundingMode = RoundingMode::Unnecessary): static
     {
         return static::ofMoney($this->getMoney()->minus($this->getAmountOf($that), $roundingMode));
     }
@@ -322,7 +322,7 @@ class Money implements Arrayable, Jsonable, JsonSerializable, Stringable
      *
      * The resulting Money has the same context as this Money. If the result needs rounding to fit this context, a rounding mode can be provided. If a rounding mode is not provided and rounding is necessary, an exception is thrown.
      */
-    public function multipliedBy(BigNumber|float|int|string $that, RoundingMode $roundingMode = RoundingMode::UNNECESSARY): static
+    public function multipliedBy(BigNumber|float|int|string $that, RoundingMode $roundingMode = RoundingMode::Unnecessary): static
     {
         return static::ofMoney($this->getMoney()->multipliedBy($that, $roundingMode));
     }
@@ -332,7 +332,7 @@ class Money implements Arrayable, Jsonable, JsonSerializable, Stringable
      *
      * The resulting Money has the same context as this Money. If the result needs rounding to fit this context, a rounding mode can be provided. If a rounding mode is not provided and rounding is necessary, an exception is thrown.
      */
-    public function dividedBy(BigNumber|float|int|string $that, RoundingMode $roundingMode = RoundingMode::UNNECESSARY): static
+    public function dividedBy(BigNumber|float|int|string $that, RoundingMode $roundingMode = RoundingMode::Unnecessary): static
     {
         return static::ofMoney($this->getMoney()->dividedBy($that, $roundingMode));
     }
@@ -469,7 +469,7 @@ class Money implements Arrayable, Jsonable, JsonSerializable, Stringable
         Currency|string $currency,
         BigNumber|float|int|string $exchangeRate,
         ?Context $context = null,
-        RoundingMode $roundingMode = RoundingMode::UNNECESSARY
+        RoundingMode $roundingMode = RoundingMode::Unnecessary
     ): Money {
         if (! $currency instanceof Currency) {
             $currency = Currency::of($currency);

@@ -63,7 +63,7 @@ class Provider extends PackageServiceProvider
             ?string $currency = null,
             ?bool $minor = null,
             ?Context $context = null,
-            RoundingMode $roundingMode = RoundingMode::UNNECESSARY
+            RoundingMode $roundingMode = RoundingMode::Unnecessary
         ): ?Money {
             $value = $this->input($key, $default);
 

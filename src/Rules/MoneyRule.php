@@ -21,7 +21,7 @@ class MoneyRule implements ValidationRule
         public ?string $currency = null,
         public ?bool $minor = null,
         public ?Context $context = null,
-        public RoundingMode $roundingMode = RoundingMode::UNNECESSARY
+        public RoundingMode $roundingMode = RoundingMode::Unnecessary
     ) {
         //
     }

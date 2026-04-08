@@ -14,7 +14,7 @@ if (! function_exists('money')) {
         ?string $currency = null,
         ?bool $minor = null,
         ?Context $context = null,
-        RoundingMode $roundingMode = RoundingMode::UNNECESSARY
+        RoundingMode $roundingMode = RoundingMode::Unnecessary
     ): Money {
         if ($currency === null) {
             /** @var string $currency */
