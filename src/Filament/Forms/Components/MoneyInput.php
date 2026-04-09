@@ -124,7 +124,7 @@ class MoneyInput extends FusedGroup
 
                 return [
                     'amount' => str($state->format(true))->replace($state->getCurrency()->getSymbol(), '')->squish()->value(),
-                    'currency' => $state->getCurrency()->getCode(),
+                    'currency' => (string) $state->getCurrency(),
                 ];
             })
             ->schema(function (Money|array|null $state) use ($static): array {
