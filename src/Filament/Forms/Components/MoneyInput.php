@@ -223,7 +223,9 @@ class MoneyInput extends FusedGroup
             && filled($state['amount'])
             && filled($state['currency'])
             && is_numeric($state['amount'])
-            && (is_string($state['currency']) || (is_array($state['currency']) && isset($state['currency']['code'])))
+            && (is_string($state['currency'])
+                || (is_array($state['currency']) && isset($state['currency']['code']) && is_string($state['currency']['code']))
+            )
         ) {
             /** @var numeric-string $amount */
             $amount = $state['amount'];
