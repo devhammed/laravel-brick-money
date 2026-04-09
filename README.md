@@ -352,7 +352,7 @@ Default:
 }
 ```
 
-The `amount` field respects the JSON serialization unit of the Money object (which defaults to `brick-money.minor` configuration). If set to `true`, the amount is returned in minor units (e.g., cents for USD). Otherwise, it is returned in major units (e.g., dollars for USD):
+The `amount` field respects the JSON serialization unit of the `Money` object (which defaults to `brick-money.minor` configuration). If set to `true`, the amount is returned in minor units (e.g., cents for USD). Otherwise, it is returned in major units (e.g., dollars for USD):
 
 ```php
 use Devhammed\LaravelBrickMoney\Money;
