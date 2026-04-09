@@ -10,10 +10,14 @@ use Filament\Schemas\Contracts\HasSchemas;
 use Filament\Schemas\Schema;
 use Livewire\Component;
 
+/**
+ * @property-read Schema $form
+ */
 class CreateProduct extends Component implements HasSchemas
 {
     use InteractsWithSchemas;
 
+    /** @var array<string, mixed> */
     public ?array $data = [];
 
     public function mount(int $amount = 0): void
