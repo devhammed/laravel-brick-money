@@ -227,7 +227,7 @@ class MoneyInput extends FusedGroup
                 || (is_array($state['currency']) && isset($state['currency']['code']) && is_string($state['currency']['code']))
             )
         ) {
-            /** @var numeric-string $amount */
+            /** @var numeric-string|int|float $amount */
             $amount = $state['amount'];
 
             /** @var string $currency */
