@@ -38,15 +38,15 @@ class CurrencySynthesizer extends Synth
         }
 
         return match ($key) {
-            'code' => $target->getCode(),
             'name' => $target->getName(),
-            'numericCode' => $target->getNumericCode(),
+            'code' => $target->getCode(),
+            'numeric_code' => $target->getNumericCode(),
             'symbol' => $target->getSymbol(),
-            'symbolFirst' => $target->isSymbolFirst(),
-            'symbolSpaced' => $target->isSymbolSpaced(),
-            'decimalPlaces' => $target->getDecimalPlaces(),
-            'decimalSeparator' => $target->getDecimalSeparator(),
-            'thousandSeparator' => $target->getThousandSeparator(),
+            'symbol_first' => $target->isSymbolFirst(),
+            'symbol_spaced' => $target->isSymbolSpaced(),
+            'decimal_places' => $target->getDecimalPlaces(),
+            'decimal_separator' => $target->getDecimalSeparator(),
+            'thousand_separator' => $target->getThousandSeparator(),
             default => throw new UnknownCurrencyException(__('brick-money::validation.invalid_selection', [
                 'attribute' => 'property',
             ])),
