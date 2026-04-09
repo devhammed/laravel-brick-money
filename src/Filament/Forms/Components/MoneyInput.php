@@ -240,6 +240,6 @@ class MoneyInput extends FusedGroup
             return $state;
         }
 
-        return money(0);
+        return money(0, $this->getDefaultCurrency());
     }
 }
