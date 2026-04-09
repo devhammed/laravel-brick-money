@@ -6,6 +6,7 @@ namespace Devhammed\LaravelBrickMoney\Filament\Forms\Components;
 
 use Closure;
 use Devhammed\LaravelBrickMoney\Currency;
+use Devhammed\LaravelBrickMoney\Filament\Forms\StateCasts\CurrencyStateCast;
 use Devhammed\LaravelBrickMoney\Money;
 use Exception;
 use Filament\Forms\Components\Select;
@@ -34,19 +35,6 @@ class MoneyInput extends FusedGroup
         throw new Exception('Kindly use the MoneyInput::for() method instead.');
     }
 
-    /**
-     * @phpstan-assert-if-true array{amount: numeric-string|int|float, currency: string} $state
-     */
-    public static function isMoneyArray(mixed $state): bool
-    {
-        return is_array($state)
-               && isset($state['amount'], $state['currency'])
-               && filled($state['amount'])
-               && filled($state['currency'])
-               && is_numeric($state['amount'])
-               && is_string($state['currency']);
-    }
-
     public static function for(string $name): static
     {
         $static = app(static::class);
@@ -61,6 +49,7 @@ class MoneyInput extends FusedGroup
                 'class' => 'money-input__currency',
             ])
             ->options(fn (): array => $static->getCurrencies())
+            ->stateCast(fn () => app(CurrencyStateCast::class))
             ->afterStateUpdated(fn (Set $set) => $set('amount', '0'))
             ->dehydrateStateUsing(fn (string $state): string => $static->isFixedCurrency() ? $static->getDefaultCurrency() : $state)
             ->disabled(fn (): bool => $static->isFixedCurrency())
@@ -129,26 +118,19 @@ class MoneyInput extends FusedGroup
             ->extraFieldWrapperAttributes([
                 'class' => 'money-input',
             ])
+            ->dehydrateStateUsing(fn (?array $state): Money => $static->normalizeMoney($state))
             ->formatStateUsing(function (Money|array|null $state) use ($static): array {
-                if (MoneyInput::isMoneyArray($state)) {
-                    $state = money($state['amount'], $state['currency'], false);
-                }
+                $state = $static->normalizeMoney($state, true);
 
-                if ($state instanceof Money) {
-                    return [
-                        'amount' => str($state->format(true))->replace($state->getCurrency()->getSymbol(), '')->squish()->value(),
-                        'currency' => $state->getCurrency()->getCode(),
-                    ];
-                }
-
-                return ['amount' => '0', 'currency' => $static->getDefaultCurrency()];
+                return [
+                    'amount' => str($state->format(true))->replace($state->getCurrency()->getSymbol(), '')->squish()->value(),
+                    'currency' => $state->getCurrency()->getCode(),
+                ];
             })
             ->schema(function (Money|array|null $state) use ($static): array {
-                if (MoneyInput::isMoneyArray($state)) {
-                    $state = money($state['amount'], $state['currency'], false);
-                }
+                $state = $static->normalizeMoney($state);
 
-                if ($state instanceof Money && ! $state->getCurrency()->isSymbolFirst()) {
+                if (! $state->getCurrency()->isSymbolFirst()) {
                     return [
                         $static->amountInput,
                         $static->currencySelect,
@@ -159,13 +141,6 @@ class MoneyInput extends FusedGroup
                     $static->currencySelect,
                     $static->amountInput,
                 ];
-            })
-            ->dehydrateStateUsing(function (?array $state): Money {
-                if (MoneyInput::isMoneyArray($state)) {
-                    return money($state['amount'], $state['currency'], false);
-                }
-
-                return money(0);
             });
     }
 
@@ -240,15 +215,31 @@ class MoneyInput extends FusedGroup
         return array_combine($codes, $codes);
     }
 
-
-    public function getDefaultState(): mixed
+    public function normalizeMoney(mixed $state, bool $isFormatting = false): Money
     {
-        $value = parent::getDefaultState();
+        if (
+            is_array($state)
+            && isset($state['amount'], $state['currency'])
+            && filled($state['amount'])
+            && filled($state['currency'])
+            && is_numeric($state['amount'])
+            && (is_string($state['currency']) || (is_array($state['currency']) && isset($state['currency']['code'])))
+        ) {
+            /** @var numeric-string $amount */
+            $amount = $state['amount'];
 
-        if ($value instanceof Money) {
-            return $value->toArray();
+            /** @var string $currency */
+            $currency = is_array($state['currency'])
+                ? $state['currency']['code']
+                : $state['currency'];
+
+            return money($amount, $currency, $isFormatting && Money::jsonSerializeMinorUnits());
         }
 
-        return $value;
+        if ($state instanceof Money) {
+            return $state;
+        }
+
+        return money(0);
     }
 }

@@ -336,8 +336,7 @@ Default:
 
 ```json
 {
-    "amount": "100",
-    "value": "1.00",
+    "amount": "1.00",
     "currency": {
         "name": "US Dollar",
         "code": "USD",
@@ -353,15 +352,26 @@ Default:
 }
 ```
 
+> The `amount` field respects the `brick-money.minor` configuration option. If set to `true`, the amount is returned in minor units (e.g., cents for USD). Otherwise, it is returned in major units (e.g., dollars for USD).
+
 Customize:
 
 ```php
 use Devhammed\LaravelBrickMoney\Money;
 
 Money::jsonSerializer(fn(Money $money) => [
-    'amount' => (string) $money->getAmount(),
-    'currency' => $money->getCurrency()->getCode(),
+    'amount' => (string) (Money::jsonSerializeMinorUnits() ? $money->getMinorAmount() : $money->getAmount()),
+    'currency' => (string) $money->getCurrency(),
 ]);
+```
+
+Which will return something like this:
+
+```json
+{
+    "amount": "1.00",
+    "currency": "USD"
+}
 ```
 
 ##### Currency
@@ -516,21 +526,6 @@ class Wallet extends Component
 
 This package also provides a [Filament](https://filamentphp.com/) plugin and components to work with money and currency.
 
-### Plugin
-
-To use the Filament components, you must first add the `MoneyPlugin` to your Filament panel configuration. This plugin handles the JSON serialization of `Money` objects for the frontend.
-
-```php
-use Devhammed\LaravelBrickMoney\Filament\MoneyPlugin;
-
-public function panel(Panel $panel): Panel
-{
-    return $panel
-        // ...
-        ->plugin(MoneyPlugin::make());
-}
-```
-
 ### Forms
 
 The `MoneyInput` component allows you to manage money fields in your Filament forms. It provides a fused group of an amount input and a currency selector.
@@ -541,9 +536,9 @@ use Devhammed\LaravelBrickMoney\Filament\Forms\Components\MoneyInput;
 MoneyInput::for('price')
 ```
 
-NOTE: You must not use the `make()` method on the `MoneyInput` class directly, as we extended the `FusedGroup` component to provide this functionality and PHP does not support overriding methods with different signatures.
-
 It will automatically use the configured currencies and default currency to populate the currency selector.
+
+> You must not use the `make()` method on the `MoneyInput` class directly, as we extended the `FusedGroup` component to provide this functionality and PHP does not support overriding methods with different signatures.
 
 You can also specify a custom list of currencies and a default currency:
 

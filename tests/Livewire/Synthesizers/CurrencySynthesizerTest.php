@@ -5,13 +5,10 @@ declare(strict_types=1);
 use Devhammed\LaravelBrickMoney\Livewire\Synthesizers\CurrencySynthesizer;
 use Devhammed\LaravelBrickMoney\Tests\Livewire\Components\CurrencyComponent;
 use Livewire\Livewire;
-use Livewire\LivewireServiceProvider;
 
 use function Pest\Livewire\livewire;
 
 beforeEach(function () {
-    app()->register(LivewireServiceProvider::class);
-
     Livewire::propertySynthesizer(CurrencySynthesizer::class);
 });
 

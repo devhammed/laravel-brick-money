@@ -45,7 +45,12 @@ class Provider extends PackageServiceProvider
         /** @var array<mixed> $currencies */
         $currencies = $this->app->make('config')->get('brick-money.currencies', []);
 
+        /** @var bool $minor */
+        $minor = $this->app->make('config')->get('brick-money.minor');
+
         Currency::currencies($currencies);
+
+        Money::jsonSerializeMinorUnits($minor);
 
         Request::macro('currency', function (string $key, ?string $default = null): ?Currency {
             $value = $this->input($key, $default);

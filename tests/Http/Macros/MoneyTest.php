@@ -25,8 +25,7 @@ it('supports string money json in major unit', function () {
     postJson('/test-major-money', ['price' => '100'])
         ->assertSuccessful()
         ->assertJson([
-            'amount' => '10000',
-            'value' => '100.00',
+            'amount' => '100.00',
             'currency' => [
                 'name' => 'US Dollar',
                 'code' => 'USD',
@@ -40,8 +39,7 @@ it('supports int money json in major unit', function () {
     postJson('/test-major-money', ['price' => 100])
         ->assertSuccessful()
         ->assertJson([
-            'amount' => '10000',
-            'value' => '100.00',
+            'amount' => '100.00',
             'currency' => [
                 'name' => 'US Dollar',
                 'code' => 'USD',
@@ -55,8 +53,7 @@ it('supports float money json in major unit', function () {
     postJson('/test-major-money', ['price' => 100.50])
         ->assertSuccessful()
         ->assertJson([
-            'amount' => '10050',
-            'value' => '100.50',
+            'amount' => '100.50',
             'currency' => [
                 'name' => 'US Dollar',
                 'code' => 'USD',
@@ -70,8 +67,7 @@ it('supports string money json in minor unit', function () {
     postJson('/test-minor-money', ['price' => '100'])
         ->assertSuccessful()
         ->assertJson([
-            'amount' => '100',
-            'value' => '1.00',
+            'amount' => '1.00',
             'currency' => [
                 'name' => 'US Dollar',
                 'code' => 'USD',
@@ -85,8 +81,7 @@ it('supports int money json in minor unit', function () {
     postJson('/test-minor-money', ['price' => 100])
         ->assertSuccessful()
         ->assertJson([
-            'amount' => '100',
-            'value' => '1.00',
+            'amount' => '1.00',
             'currency' => [
                 'name' => 'US Dollar',
                 'code' => 'USD',
@@ -106,7 +101,6 @@ it('supports money json default', function () {
         ->assertSuccessful()
         ->assertJson([
             'amount' => '0',
-            'value' => '0',
             'currency' => [
                 'name' => 'US Dollar',
                 'code' => 'USD',

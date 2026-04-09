@@ -49,6 +49,11 @@ class Money implements Arrayable, Jsonable, JsonSerializable, Stringable
     protected static Closure $jsonSerializer;
 
     /**
+     * Whether to use minor units when converting to JSON.
+     */
+    protected static bool $jsonSerializeMinorUnits;
+
+    /**
      * Create an instance of Money.
      */
     private function __construct(
@@ -132,10 +137,21 @@ class Money implements Arrayable, Jsonable, JsonSerializable, Stringable
         }
 
         return static::$jsonSerializer ??= fn (Money $money) => [
-            'amount' => (string) $money->getMinorAmount(),
-            'value' => (string) $money->getAmount(),
+            'amount' => (string) (static::jsonSerializeMinorUnits() ? $money->getMinorAmount() : $money->getAmount()),
             'currency' => $money->getCurrency(),
         ];
+    }
+
+    /**
+     * Get or set whether to use minor units when converting to JSON.
+     */
+    public static function jsonSerializeMinorUnits(?bool $value = null): bool
+    {
+        if ($value !== null) {
+            static::$jsonSerializeMinorUnits = $value;
+        }
+
+        return static::$jsonSerializeMinorUnits ??= false;
     }
 
     /**
