@@ -123,7 +123,7 @@ class MoneyInput extends FusedGroup
                 $state = $static->normalizeMoney($state, true);
 
                 return [
-                    'amount' => str($state->format(true))->replace($state->getCurrency()->getSymbol(), '')->squish()->value(),
+                    'amount' => str($state)->replace($state->getCurrency()->getSymbol(), '')->squish()->value(),
                     'currency' => (string) $state->getCurrency(),
                 ];
             })

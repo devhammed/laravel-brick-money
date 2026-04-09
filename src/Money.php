@@ -611,6 +611,6 @@ class Money implements Arrayable, Jsonable, JsonSerializable, Stringable
      */
     public function __toString(): string
     {
-        return $this->format();
+        return $this->format(true);
     }
 }
