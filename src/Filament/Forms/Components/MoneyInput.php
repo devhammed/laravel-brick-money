@@ -49,7 +49,7 @@ class MoneyInput extends FusedGroup
                 'class' => 'money-input__currency',
             ])
             ->options(fn (): array => $static->getCurrencies())
-            ->stateCast(fn () => app(CurrencyStateCast::class))
+            ->stateCast(fn (): CurrencyStateCast => app(CurrencyStateCast::class))
             ->afterStateUpdated(fn (Set $set) => $set('amount', '0'))
             ->dehydrateStateUsing(fn (string $state): string => $static->isFixedCurrency() ? $static->getDefaultCurrency() : $state)
             ->disabled(fn (): bool => $static->isFixedCurrency())
