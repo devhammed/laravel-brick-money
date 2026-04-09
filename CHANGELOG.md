@@ -2,11 +2,22 @@
 
 All notable changes to `laravel-brick-money` will be documented in this file.
 
+## v1.0.6
+
+### What's Changed
+
+- The JSON serializer unit is now configurable.
+- BREAKING CHANGE: The default JSON serializer now respects the `brick-money.minor` configuration so you might start seeing major units in your JSON responses.
+
+Full Changelog: https://github.com/devhammed/laravel-brick-money/compare/1.0.5...1.0.6
+
 ## v1.0.5
 
 ### What's Changed
 
 - Fixed issue with Composer package tagging
+
+Full Changelog: https://github.com/devhammed/laravel-brick-money/compare/1.0.4...1.0.5
 
 ## v1.0.4
 
