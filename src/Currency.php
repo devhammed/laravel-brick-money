@@ -95,6 +95,7 @@ class Currency implements Arrayable, Jsonable, JsonSerializable, Stringable
     private function __construct(string $currency)
     {
         $currency = mb_strtoupper(mb_trim($currency));
+
         $currencies = static::currencies();
 
         if (! array_key_exists($currency, $currencies)) {

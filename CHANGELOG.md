@@ -2,6 +2,15 @@
 
 All notable changes to `laravel-brick-money` will be documented in this file.
 
+## v1.0.8
+
+### What's Changed
+
+- `Money::convertedTo()` now accepts the currency ISO code in addition to the brick/money Currency object and currency code string.
+- Fixed issue with `Currency::of()` method not recognizing custom currencies.
+
+Full Changelog: https://github.com/devhammed/laravel-brick-money/compare/1.0.7...1.0.8
+
 ## v1.0.7
 
 ### What's Changed
