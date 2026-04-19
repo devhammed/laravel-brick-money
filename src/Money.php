@@ -597,7 +597,7 @@ class Money implements Arrayable, Jsonable, JsonSerializable, MoneyContainer, St
      * For example, converting a default money of `USD 1.23` to EUR with an exchange rate of `0.91` and RoundingMode::UP will yield `EUR 1.12`.
      */
     public function convertedTo(
-        Currency|string $currency,
+        Currency|string|int $currency,
         BigNumber|float|int|string $exchangeRate,
         ?Context $context = null,
         RoundingMode $roundingMode = RoundingMode::Unnecessary

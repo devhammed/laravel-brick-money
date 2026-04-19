@@ -123,13 +123,15 @@ class Currency implements Arrayable, Jsonable, JsonSerializable, Stringable
     /**
      * Create an instance of `Currency` from `Brick\Money\Currency` or `string`.
      */
-    public static function of(BrickCurrency|string|int $currency): static
+    public static function of(BrickCurrency|string|int $currencyCode): static
     {
-        if (! $currency instanceof BrickCurrency) {
-            $currency = BrickCurrency::of($currency);
+        if ($currencyCode instanceof BrickCurrency) {
+            $currencyCode = $currencyCode->getCurrencyCode();
+        } elseif (is_int($currencyCode)) {
+            $currencyCode = BrickCurrency::of($currencyCode)->getCurrencyCode();
         }
 
-        return new static($currency->getCurrencyCode());
+        return new static($currencyCode);
     }
 
     /**
