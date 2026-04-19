@@ -10,7 +10,7 @@ All notable changes to `laravel-brick-money` will be documented in this file.
 - Added `Money::max(...$monies)` method
 - Added `Money::total(...$monies)` method
 - Added `Money::average(...$monies)` method
-- Added `Currency::ofCurrency($code)` method
+- Added `Currency::ofCountry($code)` method
 - Added `Currency::currencies()` method
 - Implemented the `MoneyContainer` interface from brick/money package
 
