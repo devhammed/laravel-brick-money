@@ -123,13 +123,25 @@ class Currency implements Arrayable, Jsonable, JsonSerializable, Stringable
     /**
      * Create an instance of `Currency` from `Brick\Money\Currency` or `string`.
      */
-    public static function of(BrickCurrency|string $currency): static
+    public static function of(BrickCurrency|string|int $currency): static
     {
-        if ($currency instanceof BrickCurrency) {
-            $currency = $currency->getCurrencyCode();
+        if (! $currency instanceof BrickCurrency) {
+            $currency = BrickCurrency::of($currency);
         }
 
-        return new static($currency);
+        return new static($currency->getCurrencyCode());
+    }
+
+    /**
+     * Returns a Currency instance for the given ISO country code.
+     *
+     * @param  string  $countryCode  The 2-letter ISO 3166-1 country code.
+     *
+     * @throws UnknownCurrencyException If the country code is unknown, or there is no single currency for the country.
+     */
+    public static function ofCountry(string $countryCode): Currency
+    {
+        return static::of(BrickCurrency::ofCountry($countryCode));
     }
 
     /**

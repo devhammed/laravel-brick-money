@@ -87,12 +87,29 @@ call it directly:
 use Devhammed\LaravelBrickMoney\Money;
 use Devhammed\LaravelBrickMoney\Currency;
 
+// Creation
 $usd = Currency::of('USD');
 $eur = Currency::of('EUR');
 $total = Money::of(1000, $usd);
 $tax = Money::of(100, $usd);
 
-// Money methods
+// Money static methods
+Money::of(100, $usd); // Get the Money instance of a numeric amount and currency.
+Money::ofMinor(100, $usd); // Get the Money instance of a numeric amount in minor units and currency.
+Money::ofMoney(\Brick\Money\Money::of(100, 'USD')); // Get the Money instance of a Brick\Money\Money instance.
+Money::zero($usd); // Get the Money instance of zero amount and currency.
+Money::min(Money::of(100, $usd), Money::of(200, $usd)); // Get the minimum of two or more Money instances.
+Money::max(Money::of(100, $usd), Money::of(200, $usd)); // Get the maximum of two or more Money instances.
+Money::total(Money::of(100, $usd), Money::of(200, $usd)); // Get the total of two or more Money instances.
+Money::locale('en_US'); // Get or set the default locale for formatting.
+Money::jsonSerializeMinorUnits(true); // Get or set whether to return minor units in JSON serialization.
+Money::jsonSerializer(fn(Money $money) => [
+    'amount' => (string) (Money::jsonSerializeMinorUnits() ?
+    $money->getMinorAmount() : $money->getAmount(),
+    'currency' => (string) $money->getCurrency(),
+ ); // Get or set the JSON serializer for Money instances.
+
+// Money instance methods
 $total->getCurrency(); // Devhammed\LaravelBrickMoney\Currency{}
 $total->getMoney(); // Brick\Money\Money{}
 $total->getContext(); // Brick\Money\Context\DefaultContext{}
@@ -124,7 +141,17 @@ $total->convertedTo('NGN', 1457); // N1,457,000
 $total->negated(); // -$1,000
 $total->format(); // "$1,000"
 
-# Currency methods
+# Currency static methods
+Currency::of('USD'); // Get the Currency instance of a currency code.
+Currency::of(\Brick\Money\Currency::of('USD')); // Get the Currency instance of a Brick\Money\Currency instance.
+Currency::ofCountry('NG'); // Get the Currency instance for a country code.
+Currency::currencies(); // Get an array of all configured currencies.
+Currency::jsonSerializer(fn(Currency $currency) => [
+    'name' => $currency->getName(),
+    'code' => $currency->getCode(),
+]); // Get or set the JSON serializer for Currency instances.
+
+# Currency instance methods
 $usd->getCode(); // "USD"
 $usd->getName(); // "US Dollar"
 $usd->getNumericCode(); // 840

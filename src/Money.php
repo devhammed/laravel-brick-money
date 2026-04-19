@@ -11,6 +11,7 @@ use Brick\Math\RoundingMode;
 use Brick\Money\Context;
 use Brick\Money\Exception\MoneyMismatchException;
 use Brick\Money\Money as BrickMoney;
+use Brick\Money\MoneyContainer;
 use Closure;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
@@ -24,7 +25,7 @@ use Stringable;
  *
  * @template-implements Arrayable<string,string|Currency>
  */
-class Money implements Arrayable, Jsonable, JsonSerializable, Stringable
+class Money implements Arrayable, Jsonable, JsonSerializable, MoneyContainer, Stringable
 {
     use Macroable;
 
@@ -74,7 +75,7 @@ class Money implements Arrayable, Jsonable, JsonSerializable, Stringable
      */
     public static function of(
         BigNumber|float|int|string $amount,
-        Currency|string $currency,
+        Currency|string|int $currency,
         ?Context $context = null,
         RoundingMode $roundingMode = RoundingMode::Unnecessary
     ): static {
@@ -94,7 +95,7 @@ class Money implements Arrayable, Jsonable, JsonSerializable, Stringable
      */
     public static function ofMinor(
         BigNumber|float|int|string $amount,
-        Currency|string $currency,
+        Currency|string|int $currency,
         ?Context $context = null,
         RoundingMode $roundingMode = RoundingMode::Unnecessary
     ): static {
@@ -113,6 +114,87 @@ class Money implements Arrayable, Jsonable, JsonSerializable, Stringable
     public static function ofMoney(BrickMoney $money): static
     {
         return new static($money, Currency::of($money->getCurrency()));
+    }
+
+    /**
+     * Returns the minimum of the given monies.
+     *
+     * If several monies are equal to the minimum value, the first one is returned.
+     *
+     * @param  Money  $money  The first money.
+     * @param  Money  ...$monies  The subsequent monies.
+     *
+     * @throws MoneyMismatchException If all the monies are not in the same currency.
+     */
+    public static function min(Money $money, Money ...$monies): Money
+    {
+        $min = $money;
+
+        foreach ($monies as $money) {
+            if ($money->isLessThan($min)) {
+                $min = $money;
+            }
+        }
+
+        return $min;
+    }
+
+    /**
+     * Returns the maximum of the given monies.
+     *
+     * If several monies are equal to the maximum value, the first one is returned.
+     *
+     * @param  Money  $money  The first money.
+     * @param  Money  ...$monies  The subsequent monies.
+     *
+     * @throws MoneyMismatchException If all the monies are not in the same currency.
+     */
+    public static function max(Money $money, Money ...$monies): Money
+    {
+        $max = $money;
+
+        foreach ($monies as $money) {
+            if ($money->isGreaterThan($max)) {
+                $max = $money;
+            }
+        }
+
+        return $max;
+    }
+
+    /**
+     * Returns the total of the given monies.
+     *
+     * The monies must share the same currency and context.
+     *
+     * @param  Money  $money  The first money.
+     * @param  Money  ...$monies  The subsequent monies.
+     *
+     * @throws MoneyMismatchException If all the monies are not in the same currency and context.
+     */
+    public static function total(Money $money, Money ...$monies): Money
+    {
+        $total = $money;
+
+        foreach ($monies as $money) {
+            $total = $total->plus($money);
+        }
+
+        return $total;
+    }
+
+    /**
+     * Returns a Money with zero value, in the given currency.
+     *
+     * By default, the money is created with a DefaultContext: it has the default scale for the currency.
+     * A Context instance can be provided to override the default.
+     *
+     * @param  Currency|string|int  $currency  The Currency instance, ISO currency code or ISO numeric currency code.
+     * @param  Context|null  $context  An optional context.
+     */
+    public static function zero(Currency|string|int $currency, ?Context $context = null): Money
+    {
+        return static::of(0, $currency, $context);
     }
 
     /**
@@ -168,6 +250,20 @@ class Money implements Arrayable, Jsonable, JsonSerializable, Stringable
     public function getCurrency(): Currency
     {
         return $this->currency;
+    }
+
+    /**
+     * Returns the amounts contained in this money container, indexed by currency code.
+     *
+     * @return BigNumber[]
+     *
+     * @psalm-return array<string, BigNumber>
+     */
+    public function getAmounts(): array
+    {
+        return [
+            $this->getCurrency()->getCode() => $this->getAmount(),
+        ];
     }
 
     /**
