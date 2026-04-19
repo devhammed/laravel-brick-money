@@ -101,6 +101,7 @@ Money::zero($usd); // Get the Money instance of zero amount and currency.
 Money::min(Money::of(100, $usd), Money::of(200, $usd)); // Get the minimum of two or more Money instances.
 Money::max(Money::of(100, $usd), Money::of(200, $usd)); // Get the maximum of two or more Money instances.
 Money::total(Money::of(100, $usd), Money::of(200, $usd)); // Get the total of two or more Money instances.
+Money::avg(Money::of(100, $usd), Money::of(200, $usd)); // Get the average of two or more Money instances.
 Money::locale('en_US'); // Get or set the default locale for formatting.
 Money::jsonSerializeMinorUnits(true); // Get or set whether to return minor units in JSON serialization.
 Money::jsonSerializer(fn(Money $money) => [

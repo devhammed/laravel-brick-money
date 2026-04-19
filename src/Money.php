@@ -184,6 +184,25 @@ class Money implements Arrayable, Jsonable, JsonSerializable, MoneyContainer, St
     }
 
     /**
+     * Returns the average of the given monies.
+     *
+     * The monies must share the same currency and context.
+     *
+     * @param  Money  $money  The first money.
+     * @param  Money  ...$monies  The subsequent monies.
+     *
+     * @throws MoneyMismatchException If all the monies are not in the same currency and context.
+     */
+    public static function avg(Money $money, Money ...$monies): Money
+    {
+        $total = static::total($money, ...$monies);
+
+        $count = 1 + count($monies);
+
+        return $total->dividedBy($count);
+    }
+
+    /**
      * Returns a Money with zero value, in the given currency.
      *
      * By default, the money is created with a DefaultContext: it has the default scale for the currency.
